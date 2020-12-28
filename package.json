@@ -1,0 +1,25 @@
+{
+  "name": "ethereum-auction-platform",
+  "version": "0.0.0",
+  "description": "Student project for blockchain fundamentals course",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcin-serwin/ethereum-auction-platform.git"
+  },
+  "keywords": [
+    "ethereum"
+  ],
+  "author": "",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/marcin-serwin/ethereum-auction-platform/issues"
+  },
+  "homepage": "https://github.com/marcin-serwin/ethereum-auction-platform#readme"
+}
