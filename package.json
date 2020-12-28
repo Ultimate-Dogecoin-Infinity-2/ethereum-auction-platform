@@ -1,25 +1,33 @@
 {
-  "name": "ethereum-auction-platform",
-  "version": "0.0.0",
-  "description": "Student project for blockchain fundamentals course",
-  "main": "truffle-config.js",
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/marcin-serwin/ethereum-auction-platform.git"
-  },
-  "keywords": [
-    "ethereum"
-  ],
-  "author": "",
-  "license": "GPL-3.0-or-later",
-  "bugs": {
-    "url": "https://github.com/marcin-serwin/ethereum-auction-platform/issues"
-  },
-  "homepage": "https://github.com/marcin-serwin/ethereum-auction-platform#readme"
+    "name": "ethereum-auction-platform",
+    "version": "0.1.0",
+    "description": "Student project for blockchain fundamentals course",
+    "main": "truffle-config.js",
+    "directories": {
+        "test": "test"
+    },
+    "scripts": {
+        "dev": "lite-server",
+        "deploy": "truffle compile; truffle migrate --reset",
+        "test": "truffle test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Ultimate-Dogecoin-Infinity-2/ethereum-auction-platform.git"
+    },
+    "keywords": [
+        "ethereum"
+    ],
+    "author": "",
+    "license": "GPL-3.0-or-later",
+    "bugs": {
+        "url": "https://github.com/Ultimate-Dogecoin-Infinity-2/ethereum-auction-platform/issues"
+    },
+    "homepage": "https://github.com/Ultimate-Dogecoin-Infinity-2/ethereum-auction-platform#readme",
+    "devDependencies": {
+        "@truffle/contract": "^4.3.4",
+        "lite-server": "^2.6.1",
+        "truffle": "^5.1.59",
+        "web3": "^1.3.1"
+    }
 }
