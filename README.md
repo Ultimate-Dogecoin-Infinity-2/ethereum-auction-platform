@@ -26,6 +26,6 @@ Student project for blockchain fundamentals course.
 
 ## Authors
 
--   Wojciech Buczek
--   Krzysztof Pióro
--   Marcin Serwin
+-   [Wojciech Buczek](https://github.com/Wowol)
+-   [Krzysztof Pióro](https://github.com/krzysztofpioro)
+-   [Marcin Serwin](https://github.com/marcin-serwin)
