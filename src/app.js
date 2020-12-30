@@ -1,5 +1,7 @@
-const IDS = {
-    ACCOUNT: "account",
+const ELEMS = {
+    ACCOUNT: document.getElementById("account"),
+    MAIN: document.getElementById("main"),
+    LOADING: document.getElementById("loading"),
 };
 
 const App = {
@@ -31,7 +33,10 @@ const App = {
     },
 
     async render() {
-        document.getElementById(IDS.ACCOUNT).textContent = App.account;
+        ELEMS.ACCOUNT.textContent = App.account;
+
+        ELEMS.MAIN.hidden = false;
+        ELEMS.LOADING.hidden = true;
     },
 };
 
