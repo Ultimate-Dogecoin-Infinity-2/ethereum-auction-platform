@@ -8,6 +8,7 @@
     },
     "scripts": {
         "dev": "lite-server",
+        "build": "truffle compile",
         "deploy": "truffle compile; truffle migrate --reset",
         "test": "truffle test"
     },
