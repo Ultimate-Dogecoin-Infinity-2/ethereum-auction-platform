@@ -16,7 +16,7 @@ Student project for blockchain fundamentals course.
 1. Run `Ganache` and perform first time setup.
 1. Connect `MetaMask` to your `Ganache` account of choice.
 1. Link this project to Ganache workspace (in Ganache: settings -> workspace -> ADD PROJECT -> select truffle-config.js)
-1. Run `npm run build` in repo directory.
+1. Run `npm run deploy` in repo directory.
 
 ## Setup
 
