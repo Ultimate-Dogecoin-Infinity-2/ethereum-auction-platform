@@ -1,3 +1,5 @@
+import { getJson } from "./utils.js";
+
 const ELEMS = {
     P2DATE: document.getElementById("p2Date"),
     P2TIME: document.getElementById("p2Time"),
@@ -10,13 +12,27 @@ const ELEMS = {
 };
 
 const AuctionCreation = {
-    async createAuction() {
+    contract: null,
+
+    async createAuction(web3provider, account) {
         const params = AuctionCreation.getParams();
-        AuctionCreation.callContract(params);
+        await AuctionCreation.loadContract(web3provider, account);
+        await AuctionCreation.callContract(params);
     },
 
     async callContract(params) {
-        // TODO
+        const result = await AuctionCreation.contract.createAuction(
+            0,
+            params.phaseTwoStart.getTime(),
+            params.phaseThreeStart.getTime(),
+            params.description,
+            web3.utils.toWei(
+                params.startingPrice.value,
+                params.startingPrice.unit
+            ),
+            params.owner
+        );
+        console.debug(result);
     },
 
     getParams() {
@@ -47,6 +63,17 @@ const AuctionCreation = {
             },
             owner: ELEMS.OWNER.value,
         };
+    },
+
+    async loadContract(web3provider, account) {
+        const json = await getJson("AuctionFactory.json");
+        const contract = TruffleContract(json);
+        contract.setProvider(web3provider);
+        contract.defaults({
+            from: account,
+        });
+
+        AuctionCreation.contract = await contract.deployed();
     },
 };
 

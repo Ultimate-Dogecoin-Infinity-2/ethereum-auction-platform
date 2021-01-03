@@ -8,6 +8,7 @@ const ELEMS = {
 
 const App = {
     account: "",
+    web3provider: null,
 
     load: async () => {
         await App.loadWeb3();
@@ -31,7 +32,7 @@ const App = {
     },
 
     async createAuction() {
-        AuctionCreation.createAuction();
+        AuctionCreation.createAuction(App.web3provider, App.account);
     },
 
     async loadAccount() {
