@@ -8,6 +8,65 @@
         <main id="main" hidden>
             <h1>Ethereum: Auction platform</h1>
             <h2>Account: <span id="account"></span></h2>
+
+            <div id="auctionCreation">
+                <form onSubmit="App.createAuction(); return false;">
+                    <h3>Create auction</h3>
+                    <div>
+                        <label for="p2">Start of reveal phase: </label>
+                        <input required type="date" id="p2Date" name="p2">
+                        <input required type="time" id="p2Time" name="p2">
+                    </div>
+                    <div>
+                        <label for="p3">End of reveal phase: </label>
+                        <input required type="date" id="p3Date" name="p3">
+                        <input required type="time" id="p3Time" name="p3">
+                    </div>
+                    <div>
+                        <label for="description">Description: </label>
+                        <br>
+                        <textarea required name="description" id="description" cols="30" rows="10"></textarea>
+                    </div>
+                    <div>
+                        <label for="startPrice">Starting price: </label>
+                        <input required type="number" name="startPrice" id="startPrice">
+                        <select required name="startPrice" id="startPriceUnit">
+                            <option value="wei">wei</option>
+                            <option value="kwei">kwei</option>
+                            <option value="Kwei">Kwei</option>
+                            <option value="babbage">babbage</option>
+                            <option value="femtoether">femtoether</option>
+                            <option value="mwei">mwei</option>
+                            <option value="Mwei">Mwei</option>
+                            <option value="lovelace">lovelace</option>
+                            <option value="picoether">picoether</option>
+                            <option value="gwei">gwei</option>
+                            <option value="Gwei">Gwei</option>
+                            <option value="shannon">shannon</option>
+                            <option value="nanoether">nanoether</option>
+                            <option value="nano">nano</option>
+                            <option value="szabo">szabo</option>
+                            <option value="microether">microether</option>
+                            <option value="micro">micro</option>
+                            <option value="finney">finney</option>
+                            <option value="milliether">milliether</option>
+                            <option value="milli">milli</option>
+                            <option value="ether">ether</option>
+                            <option value="kether">kether</option>
+                            <option value="grand">grand</option>
+                            <option value="mether">mether</option>
+                            <option value="gether">gether</option>
+                            <option value="tether">tether</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="owner">Owner: </label>
+                        <input type="text" name="owner" id="owner">
+                    </div>
+
+                    <input type="submit" value="Submit" >
+                </form>
+            </div>
         </main>
         <div id="loading">Loading...</div>
 
