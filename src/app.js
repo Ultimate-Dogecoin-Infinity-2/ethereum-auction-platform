@@ -42,6 +42,7 @@ const App = {
 
 (() => {
     window.onload = () => {
+        window.App = App;
         App.load();
     };
 })();

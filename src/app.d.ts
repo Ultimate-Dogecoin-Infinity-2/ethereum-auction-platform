@@ -1,5 +1,6 @@
 interface Window {
     web3: import("web3").default;
+    App: any;
 }
 
 declare const web3: import("web3").default;
