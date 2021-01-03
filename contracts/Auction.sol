@@ -19,11 +19,11 @@ contract Auction {
         uint revealedSum;
         uint biddedSum;
     }
-    mapping(address payable => Bid) public revealedBids;
+    mapping(address => Bid) public revealedBids;
 
-    constructor(uint _phaseOneStart, uint _phaseTwoStart, uint _phaseThreeStart, string _description, uint _startingPrice, address payable owner) { }
+    constructor(uint _phaseOneStart, uint _phaseTwoStart, uint _phaseThreeStart, string memory _description, uint _startingPrice, address payable _owner) { }
 
-    function placeBids(bytes32[] _bidHash) public payable { }
+    function placeBids(bytes32[] memory _bidHash) public payable { }
 
     struct BidReveal {
         address payable bidder;
@@ -31,7 +31,7 @@ contract Auction {
         uint salt;
     }
 
-    function revealBids(BidReveal[] bidReveal) public { }
+    function revealBids(BidReveal[] memory bidReveal) public { }
 
-    function withdraw(address payable[] addr) public { }
+    function withdraw(address payable[] memory addr) public { }
 }

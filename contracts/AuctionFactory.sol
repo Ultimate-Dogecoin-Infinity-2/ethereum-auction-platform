@@ -8,5 +8,5 @@ contract AuctionFactory {
 
     event AuctionCreated(address auctionContract, address owner, uint numAuctions, address[] allAuctions);
 
-    function createAuction(uint _phaseOneStart, uint _phaseTwoStart, uint _phaseThreeStart, string _description, uint _startingPrice, address payable owner) public { }
+    function createAuction(uint _phaseOneStart, uint _phaseTwoStart, uint _phaseThreeStart, string memory _description, uint _startingPrice, address payable owner) public { }
 }
