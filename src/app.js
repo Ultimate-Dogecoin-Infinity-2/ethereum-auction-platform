@@ -1,3 +1,5 @@
+import AuctionCreation from "./AuctionCreation.js";
+
 const ELEMS = {
     ACCOUNT: document.getElementById("account"),
     MAIN: document.getElementById("main"),
@@ -26,6 +28,10 @@ const App = {
         } catch (error) {
             // User denied account access...
         }
+    },
+
+    async createAuction() {
+        AuctionCreation.createAuction();
     },
 
     async loadAccount() {
