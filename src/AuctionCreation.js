@@ -1,4 +1,4 @@
-import { getJson } from "./utils.js";
+import { createAuctionContract, getJson } from "./utils.js";
 
 const ELEMS = {
     P2DATE: document.getElementById("p2Date"),
@@ -16,7 +16,10 @@ const AuctionCreation = {
 
     async createAuction(web3provider, account) {
         const params = AuctionCreation.getParams();
-        await AuctionCreation.loadContract(web3provider, account);
+        AuctionCreation.contract = await createAuctionContract(
+            web3provider,
+            account
+        );
         await AuctionCreation.callContract(params);
     },
 
