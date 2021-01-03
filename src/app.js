@@ -1,4 +1,5 @@
 import AuctionCreation from "./AuctionCreation.js";
+import AuctionList from "./AuctionList.js";
 
 const ELEMS = {
     ACCOUNT: document.getElementById("account"),
@@ -33,6 +34,10 @@ const App = {
 
     async createAuction() {
         AuctionCreation.createAuction(App.web3provider, App.account);
+    },
+
+    async listAuctions() {
+        AuctionList.listAuctions(App.web3provider, App.account);
     },
 
     async loadAccount() {
