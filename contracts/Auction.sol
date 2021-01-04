@@ -15,7 +15,7 @@ contract Auction {
     mapping(bytes32 => uint) public bids;
 
     struct Bid {
-        uint revealedSum;
+        uint revealedWeis;
         uint biddedPrice;
     }
 
@@ -73,7 +73,7 @@ contract Auction {
 
             uint weisRelatedToHash = bids[keccak256(abi.encode(bid.bidder, bid.biddedPrice, bid.salt))];
 
-            revealedBids[bid.bidder].revealedSum += weisRelatedToHash;
+            revealedBids[bid.bidder].revealedWeis += weisRelatedToHash;
         }
     }
 
