@@ -10,6 +10,17 @@ const ELEMS = {
 
 const AuctionList = {
     web3provider: null,
+
+    setWeb3(web3provider) {
+        AuctionList.web3provider = web3provider;
+    },
+
+    onLoad() {
+        AuctionList.listAuctions(AuctionList.web3provider);
+    },
+
+    onSubmit() {},
+
     async listAuctions(web3provider) {
         ELEMS.LIST.innerText = "";
 

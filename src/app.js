@@ -6,10 +6,16 @@ const ELEMS = {
     MAIN: document.getElementById("main"),
     LOADING: document.getElementById("loading"),
 };
+const ROUTER = {
+    "/": { onLoad() {}, onSubmit() {}, setWeb3() {} },
+    "/auction_creation.html": AuctionCreation,
+    "/auction_listing.html": AuctionList,
+};
 
 const App = {
     account: "",
     web3provider: null,
+    pathObject: null,
 
     load: async () => {
         await App.loadWeb3();
@@ -32,12 +38,8 @@ const App = {
         }
     },
 
-    async createAuction() {
-        AuctionCreation.createAuction(App.web3provider, App.account);
-    },
-
-    async listAuctions() {
-        AuctionList.listAuctions(App.web3provider, App.account);
+    async onSubmit() {
+        App.pathObject.onSubmit();
     },
 
     async loadAccount() {
@@ -46,9 +48,13 @@ const App = {
 
     async render() {
         ELEMS.ACCOUNT.textContent = App.account;
+        App.pathObject = ROUTER[window.location.pathname];
+        App.pathObject.setWeb3(App.web3provider, App.account);
 
         ELEMS.MAIN.hidden = false;
         ELEMS.LOADING.hidden = true;
+
+        App.pathObject.onLoad();
     },
 };
 

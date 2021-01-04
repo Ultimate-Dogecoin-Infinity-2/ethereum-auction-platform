@@ -13,6 +13,22 @@ const ELEMS = {
 
 const AuctionCreation = {
     contract: null,
+    web3provider: null,
+    account: null,
+
+    setWeb3(web3provider, account) {
+        AuctionCreation.web3provider = web3provider;
+        AuctionCreation.account = account;
+    },
+
+    onLoad() {},
+
+    onSubmit() {
+        AuctionCreation.createAuction(
+            AuctionCreation.web3provider,
+            AuctionCreation.account
+        );
+    },
 
     async createAuction(web3provider, account) {
         const params = AuctionCreation.getParams();
