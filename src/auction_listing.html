@@ -9,7 +9,7 @@
             Go to:
             <ul>
                 <li><a href="auction_creation.html">Create an auction</a></li>
-                <li><a href="auction_listing.html">List auctions</a></li>
+                <li>List auctions</li>
                 <li>
                     <a href="auction_commiting.html">Place bid in auction</a>
                 </li>
@@ -21,10 +21,13 @@
                 </li>
             </ul>
         </nav>
-
         <main id="main" hidden>
             <h1>Ethereum: Auction platform</h1>
             <h2>Account: <span id="account"></span></h2>
+            <h3>List auctions</h3>
+            <button onclick="App.listAuctions()">List auctions</button>
+
+            <ol id="list"></ol>
         </main>
         <div id="loading">Loading...</div>
 

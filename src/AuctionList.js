@@ -32,7 +32,6 @@ const AuctionList = {
         const elem = document.createElement("li");
         elem.innerHTML = `<div>
             <h4>Address: ${address}</h4>
-            <h5> ${auctionInfo.owner} </h5>
             <div>Phase two from ${auctionInfo.phaseTwoStart.toLocaleString()} 
             to ${auctionInfo.phaseThreeStart.toLocaleString()}</div>
             <h5> Description: </h5>
@@ -47,6 +46,7 @@ const AuctionList = {
             AuctionList.web3provider,
             address
         );
+        console.log("asdf", contract);
         return {
             phaseTwoStart: new Date(
                 (await contract.phaseTwoStart.call()).toNumber()
@@ -55,7 +55,6 @@ const AuctionList = {
                 (await contract.phaseThreeStart.call()).toNumber()
             ),
             description: await contract.description.call(),
-            owner: await contract.owner.call(),
         };
     },
 };
