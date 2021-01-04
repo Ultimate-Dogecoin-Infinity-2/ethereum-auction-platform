@@ -52,13 +52,10 @@ contract Auction {
         _;
     }
 
-    function placeBids(bytes32[] memory bidHash) onlyInPhaseOne public payable {
+    function placeBids(bytes32 bidHash) onlyInPhaseOne public payable {
         require (msg.value > 0, "Ether provided must be greater than 0");
-
-        for (uint i = 0; i < bidHash.length; i++) {
-            require (bids[bidHash[i]] == 0, "You cannot send the same hash twice");
-            bids[bidHash[i]] = msg.value;
-        }
+        require (bids[bidHash] == 0, "You cannot send the same hash twice");
+        bids[bidHash] = msg.value;
     }
 
     function revealBids(BidReveal[] memory bidReveal) onlyInPhaseTwo public {
