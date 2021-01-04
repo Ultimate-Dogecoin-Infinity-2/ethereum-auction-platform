@@ -8,7 +8,6 @@ contract Auction {
 
     uint public startingPrice;
 
-    uint public phaseOneStart;
     uint public phaseTwoStart;
     uint public phaseThreeStart;
 
@@ -29,8 +28,7 @@ contract Auction {
 
     mapping(address => Bid) public revealedBids;
 
-    constructor(uint _phaseOneStart, uint _phaseTwoStart, uint _phaseThreeStart, string memory _description, uint _startingPrice, address payable _owner) {
-        phaseOneStart = _phaseOneStart;
+    constructor(uint _phaseTwoStart, uint _phaseThreeStart, string memory _description, uint _startingPrice, address payable _owner) {
         phaseTwoStart = _phaseTwoStart;
         phaseThreeStart = _phaseThreeStart;
         description = _description;
