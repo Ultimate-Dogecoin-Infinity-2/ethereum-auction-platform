@@ -37,18 +37,18 @@ contract Auction {
     }
 
     modifier onlyInPhaseOne {
-        require(block.number < phaseTwoStart, "This action is only avalible in phase one");
+        require(block.timestamp < phaseTwoStart, "This action is only avalible in phase one");
         _;
     }
 
     modifier onlyInPhaseTwo {
-        require(block.number >= phaseTwoStart && block.number < phaseThreeStart, 
+        require(block.timestamp >= phaseTwoStart && block.timestamp < phaseThreeStart, 
             "This action is only avalible in phase two");
         _;
     }
 
     modifier onlyInPhaseThree {
-        require(block.number >= phaseThreeStart, "This action is only avalible in phase three");
+        require(block.timestamp >= phaseThreeStart, "This action is only avalible in phase three");
         _;
     }
 
