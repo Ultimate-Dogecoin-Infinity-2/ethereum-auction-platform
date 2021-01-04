@@ -8,8 +8,8 @@ contract Auction {
 
     uint public startingPrice;
 
-    uint public phaseTwoStart;
-    uint public phaseThreeStart;
+    uint256 public phaseTwoStart;
+    uint256 public phaseThreeStart;
 
     // Mapping to frozen ether
     mapping(bytes32 => uint) public bids;
