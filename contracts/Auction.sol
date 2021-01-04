@@ -16,12 +16,12 @@ contract Auction {
 
     struct Bid {
         uint revealedSum;
-        uint biddedSum;
+        uint biddedPrice;
     }
 
     struct BidReveal {
         address payable bidder;
-        uint biddedSum;
+        uint biddedPrice;
         uint salt;
     }
 
@@ -62,16 +62,16 @@ contract Auction {
         for (uint i = 0; i < bidReveal.length; i++) {
             BidReveal memory bid = bidReveal[i];
 
-            require(bid.biddedSum > 0, "Bidded sum must be greater than 0");
+            require(bid.biddedPrice > 0, "Bidded sum must be greater than 0");
 
-            if (revealedBids[bid.bidder].biddedSum == 0) {
-                revealedBids[bid.bidder].biddedSum = bid.biddedSum;
+            if (revealedBids[bid.bidder].biddedPrice == 0) {
+                revealedBids[bid.bidder].biddedPrice = bid.biddedPrice;
             }
             else {
-                require(revealedBids[bid.bidder].biddedSum == bid.biddedSum, "Bidded sum cannot be changed");
+                require(revealedBids[bid.bidder].biddedPrice == bid.biddedPrice, "Bidded sum cannot be changed");
             }
 
-            uint weisRelatedToHash = bids[keccak256(abi.encode(bid.bidder, bid.biddedSum, bid.salt))];
+            uint weisRelatedToHash = bids[keccak256(abi.encode(bid.bidder, bid.biddedPrice, bid.salt))];
 
             revealedBids[bid.bidder].revealedSum += weisRelatedToHash;
         }
