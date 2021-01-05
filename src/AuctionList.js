@@ -31,9 +31,7 @@ const AuctionList = {
 
         try {
             for (let i = 0; ; i++) {
-                AuctionList.addAuctionToList(
-                    await factoryContract.auctions.call(i)
-                );
+                AuctionList.addAuctionToList(await factoryContract.auctions(i));
             }
         } catch (e) {}
     },
@@ -57,7 +55,6 @@ const AuctionList = {
             AuctionList.web3provider,
             address
         );
-        console.log("asdf", contract);
         return {
             phaseTwoStart: new Date(
                 (await contract.phaseTwoStart.call()).toNumber()
