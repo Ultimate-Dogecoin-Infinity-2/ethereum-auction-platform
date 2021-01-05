@@ -41,7 +41,6 @@ const AuctionCreation = {
 
     async callContract(params) {
         const result = await AuctionCreation.contract.createAuction(
-            0,
             params.phaseTwoStart.getTime(),
             params.phaseThreeStart.getTime(),
             params.description,
