@@ -11,6 +11,10 @@ contract Auction {
     uint256 public phaseTwoStart;
     uint256 public phaseThreeStart;
 
+    address payable firstBidder;
+    uint256 firstPrice;
+    uint256 secondPrice;
+
     // Mapping to frozen ether
     mapping(bytes32 => uint256) public bids;
 
@@ -92,6 +96,18 @@ contract Auction {
 
             bids[bidHash] = 0;
             revealedBids[bid.bidder].revealedWeis += weisRelatedToHash;
+
+            uint256 price = revealedBids[bid.bidder].biddedPrice;
+            uint256 weis = revealedBids[bid.bidder].revealedWeis;
+            if (weis >= price && weis - weisRelatedToHash < price) {
+                if (price > firstPrice) {
+                    secondPrice = firstPrice;
+                    firstPrice = price;
+                    firstBidder = bid.bidder;
+                } else if (price > secondPrice) {
+                    secondPrice = price;
+                }
+            }
         }
     }
 
