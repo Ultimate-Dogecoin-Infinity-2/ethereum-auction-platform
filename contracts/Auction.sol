@@ -45,6 +45,8 @@ contract Auction {
         description = _description;
         startingPrice = _startingPrice;
         owner = _owner;
+        firstPrice = _startingPrice;
+        secondPrice = _startingPrice;
     }
 
     modifier onlyInPhaseOne {
