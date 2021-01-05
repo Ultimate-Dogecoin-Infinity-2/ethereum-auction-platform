@@ -15,6 +15,8 @@ contract Auction {
     uint256 firstPrice;
     uint256 secondPrice;
 
+    bool ownerHasWithdrawn;
+
     // Mapping to frozen ether
     mapping(bytes32 => uint256) public bids;
 
@@ -115,6 +117,23 @@ contract Auction {
         public
         onlyInPhaseThree
     {
-        // TODO: Implement
+        for (uint i = 0; i < withdrawalAddress.length; i++) {
+            if (withdrawalAddress[i] == owner && !ownerHasWithdrawn) {
+                ownerHasWithdrawn = true;
+                owner.transfer(secondPrice);
+            }
+
+            uint256 price = revealedBids[withdrawalAddress[i]].biddedPrice;
+            uint256 weis = revealedBids[withdrawalAddress[i]].revealedWeis;
+            if (price > 0 && weis >= price) {
+                uint256 withdrawalWeis = weis;
+                if (withdrawalAddress[i] == firstBidder) {
+                    withdrawalWeis -= secondPrice;
+                }
+
+                revealedBids[withdrawalAddress[i]].revealedWeis = 0;
+                withdrawalAddress[i].transfer(withdrawalWeis);
+            }
+        }
     }
 }
