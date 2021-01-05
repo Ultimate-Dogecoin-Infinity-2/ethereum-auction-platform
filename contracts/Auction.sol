@@ -66,7 +66,7 @@ contract Auction {
         _;
     }
 
-    function placeBids(bytes32 bidHash) public payable onlyInPhaseOne {
+    function placeBid(bytes32 bidHash) public payable onlyInPhaseOne {
         require(msg.value > 0, "Ether provided must be greater than 0");
         require(bids[bidHash] == 0, "You cannot send the same hash twice");
         bids[bidHash] = msg.value;
