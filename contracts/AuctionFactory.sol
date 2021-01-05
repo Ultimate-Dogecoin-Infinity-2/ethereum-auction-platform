@@ -19,6 +19,10 @@ contract AuctionFactory {
         uint256 _phaseThreeStart,
         string memory _description,
         uint256 _startingPrice,
-        address payable owner
-    ) public {}
+        address payable _owner
+    ) public {
+        Auction auction = new Auction(_phaseTwoStart, _phaseThreeStart, _description, _startingPrice, _owner);
+        auctions.push(address(auction));
+        emit AuctionCreated(address(auction), _owner, auctions.length, auctions);
+    }
 }
