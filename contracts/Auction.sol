@@ -75,22 +75,22 @@ contract Auction {
     function revealBids(BidReveal[] memory bidReveal) public onlyInPhaseTwo {
         for (uint256 i = 0; i < bidReveal.length; i++) {
             BidReveal memory bid = bidReveal[i];
+            bytes32 bidHash = keccak256(abi.encode(bid.bidder, bid.biddedPrice, bid.salt));
+            uint256 weisRelatedToHash = bids[bidHash];
 
-            require(bid.biddedPrice > 0, "Bidded sum must be greater than 0");
+            require(weisRelatedToHash > 0, "You cannot reveal the same hash twice");
+            require(bid.biddedPrice > 0, "Bidded price must be greater than 0");
 
             if (revealedBids[bid.bidder].biddedPrice == 0) {
                 revealedBids[bid.bidder].biddedPrice = bid.biddedPrice;
             } else {
                 require(
                     revealedBids[bid.bidder].biddedPrice == bid.biddedPrice,
-                    "Bidded sum cannot be changed"
+                    "Bidded price cannot be changed"
                 );
             }
 
-            uint256 weisRelatedToHash = bids[keccak256(
-                abi.encode(bid.bidder, bid.biddedPrice, bid.salt)
-            )];
-
+            bids[bidHash] = 0;
             revealedBids[bid.bidder].revealedWeis += weisRelatedToHash;
         }
     }
