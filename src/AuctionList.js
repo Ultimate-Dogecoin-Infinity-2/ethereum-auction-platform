@@ -47,7 +47,6 @@ const AuctionList = {
             <div> ${auctionInfo.description} </div>
         </div>`;
         ELEMS.LIST.appendChild(elem);
-        console.log(address, auctionInfo);
     },
 
     async getAuctionInfo(address) {
@@ -57,12 +56,12 @@ const AuctionList = {
         );
         return {
             phaseTwoStart: new Date(
-                (await contract.phaseTwoStart.call()).toNumber()
+                (await contract.phaseTwoStart()).toNumber()
             ),
             phaseThreeStart: new Date(
-                (await contract.phaseThreeStart.call()).toNumber()
+                (await contract.phaseThreeStart()).toNumber()
             ),
-            description: await contract.description.call(),
+            description: await contract.description(),
         };
     },
 };
