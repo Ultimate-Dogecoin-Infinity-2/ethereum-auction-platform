@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Ethereum: Auction platform</title>
+    </head>
+    <body>
+        <nav>
+            Go to:
+            <ul>
+                <li><a href="auction_creation.html">Create an auction</a></li>
+                <li><a href="auction_listing.html">List auctions</a></li>
+                <li>Place bid in auction</li>
+                <li>
+                    <a href="auction_revealing.html">Reveal bid in auction</a>
+                </li>
+                <li>
+                    <a href="auction_withdrawing.html">Withdraw from auction</a>
+                </li>
+            </ul>
+        </nav>
+
+        <main id="main" hidden>
+            <h1>Ethereum: Auction platform</h1>
+            <h2>Account: <span id="account"></span></h2>
+            <form onSubmit="App.onSubmit(); return false;">
+                <h3>Place bid</h3>
+
+                <div>
+                    <label for="auctionAddress">Auction address: </label>
+                    <input
+                        required
+                        type="text"
+                        name="auctionAddress"
+                        id="auctionAddress"
+                    />
+                </div>
+
+                <div>
+                    <label for="bidderAddress">Bidder address: </label>
+                    <input
+                        required
+                        type="text"
+                        name="bidderAddress"
+                        id="bidderAddress"
+                    />
+                </div>
+
+                <div>
+                    <label for="placedBid">Placed bid: </label>
+                    <input
+                        required
+                        type="number"
+                        name="placedBid"
+                        id="placedBid"
+                    />
+                    <select required name="placedBid" id="placedBidUnit">
+                        <option value="wei">wei</option>
+                        <option value="kwei">kwei</option>
+                        <option value="Kwei">Kwei</option>
+                        <option value="babbage">babbage</option>
+                        <option value="femtoether">femtoether</option>
+                        <option value="mwei">mwei</option>
+                        <option value="Mwei">Mwei</option>
+                        <option value="lovelace">lovelace</option>
+                        <option value="picoether">picoether</option>
+                        <option value="gwei">gwei</option>
+                        <option value="Gwei">Gwei</option>
+                        <option value="shannon">shannon</option>
+                        <option value="nanoether">nanoether</option>
+                        <option value="nano">nano</option>
+                        <option value="szabo">szabo</option>
+                        <option value="microether">microether</option>
+                        <option value="micro">micro</option>
+                        <option value="finney">finney</option>
+                        <option value="milliether">milliether</option>
+                        <option value="milli">milli</option>
+                        <option value="ether">ether</option>
+                        <option value="kether">kether</option>
+                        <option value="grand">grand</option>
+                        <option value="mether">mether</option>
+                        <option value="gether">gether</option>
+                        <option value="tether">tether</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="frozenWeis">Frozen weis: </label>
+                    <input
+                        required
+                        type="number"
+                        name="frozenWeis"
+                        id="frozenWeis"
+                    />
+                    <select required name="frozenWeis" id="frozenWeisUnit">
+                        <option value="wei">wei</option>
+                        <option value="kwei">kwei</option>
+                        <option value="Kwei">Kwei</option>
+                        <option value="babbage">babbage</option>
+                        <option value="femtoether">femtoether</option>
+                        <option value="mwei">mwei</option>
+                        <option value="Mwei">Mwei</option>
+                        <option value="lovelace">lovelace</option>
+                        <option value="picoether">picoether</option>
+                        <option value="gwei">gwei</option>
+                        <option value="Gwei">Gwei</option>
+                        <option value="shannon">shannon</option>
+                        <option value="nanoether">nanoether</option>
+                        <option value="nano">nano</option>
+                        <option value="szabo">szabo</option>
+                        <option value="microether">microether</option>
+                        <option value="micro">micro</option>
+                        <option value="finney">finney</option>
+                        <option value="milliether">milliether</option>
+                        <option value="milli">milli</option>
+                        <option value="ether">ether</option>
+                        <option value="kether">kether</option>
+                        <option value="grand">grand</option>
+                        <option value="mether">mether</option>
+                        <option value="gether">gether</option>
+                        <option value="tether">tether</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="salt">Salt: </label>
+                    <input required type="text" name="salt" id="salt" />
+                </div>
+
+                <input type="submit" value="Submit" />
+            </form>
+        </main>
+        <div id="loading">Loading...</div>
+
+        <!-- Scripts -->
+        <script src="vendor/@truffle/contract/dist/truffle-contract.js"></script>
+        <script src="vendor/web3/dist/web3.min.js"></script>
+        <script type="module" src="app.js"></script>
+    </body>
+</html>

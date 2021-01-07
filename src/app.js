@@ -1,5 +1,6 @@
 import AuctionCreation from "./AuctionCreation.js";
 import AuctionList from "./AuctionList.js";
+import AuctionCommit from "./AuctionCommit.js";
 
 const ELEMS = {
     ACCOUNT: document.getElementById("account"),
@@ -10,6 +11,7 @@ const ROUTER = {
     "/": { onLoad() {}, onSubmit() {}, setWeb3() {} },
     "/auction_creation.html": AuctionCreation,
     "/auction_listing.html": AuctionList,
+    "/auction_commiting.html": AuctionCommit,
 };
 
 const App = {
