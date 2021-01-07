@@ -41,8 +41,8 @@ const AuctionCreation = {
 
     async callContract(params) {
         const result = await AuctionCreation.contract.createAuction(
-            params.phaseTwoStart.getTime(),
-            params.phaseThreeStart.getTime(),
+            String(Math.floor(params.phaseTwoStart.getTime() / 1000)),
+            String(Math.floor(params.phaseThreeStart.getTime() / 1000)),
             params.description,
             web3.utils.toWei(
                 params.startingPrice.value,

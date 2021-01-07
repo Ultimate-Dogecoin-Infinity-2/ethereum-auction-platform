@@ -56,10 +56,10 @@ const AuctionList = {
         );
         return {
             phaseTwoStart: new Date(
-                (await contract.phaseTwoStart()).toNumber()
+                (await contract.phaseTwoStart()).toNumber() * 1000
             ),
             phaseThreeStart: new Date(
-                (await contract.phaseThreeStart()).toNumber()
+                (await contract.phaseThreeStart()).toNumber() * 1000
             ),
             description: await contract.description(),
         };
