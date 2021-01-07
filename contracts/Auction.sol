@@ -83,10 +83,15 @@ contract Auction {
     function revealBids(BidReveal[] memory bidReveal) public onlyInPhaseTwo {
         for (uint256 i = 0; i < bidReveal.length; i++) {
             BidReveal memory bid = bidReveal[i];
-            bytes32 bidHash = keccak256(abi.encode(bid.bidder, bid.biddedPrice, bid.salt));
+            bytes32 bidHash = keccak256(
+                abi.encode(bid.bidder, bid.biddedPrice, bid.salt)
+            );
             uint256 weisRelatedToHash = bids[bidHash];
 
-            require(weisRelatedToHash > 0, "You cannot reveal the same hash twice");
+            require(
+                weisRelatedToHash > 0,
+                "You cannot reveal the same hash twice"
+            );
             require(bid.biddedPrice > 0, "Bidded price must be greater than 0");
 
             if (revealedBids[bid.bidder].biddedPrice == 0) {
@@ -119,7 +124,7 @@ contract Auction {
         public
         onlyInPhaseThree
     {
-        for (uint i = 0; i < withdrawalAddress.length; i++) {
+        for (uint256 i = 0; i < withdrawalAddress.length; i++) {
             if (withdrawalAddress[i] == owner && !ownerHasWithdrawn) {
                 ownerHasWithdrawn = true;
                 owner.transfer(secondPrice);
