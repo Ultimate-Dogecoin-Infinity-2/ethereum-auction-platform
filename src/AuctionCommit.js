@@ -42,7 +42,7 @@ const AuctionCommit = {
             account
         );
         try {
-            const x = await AuctionCommit.contract.placeBid(
+            await AuctionCommit.contract.placeBid(
                 AuctionCommit.computeHash(params),
                 {
                     value: web3.utils.toWei(
@@ -58,9 +58,17 @@ const AuctionCommit = {
 
     computeHash(params) {
         return web3.utils.soliditySha3(
-            params.bidderAddress,
-            web3.utils.toWei(params.placedBid.value, params.placedBidUnit),
-            params.salt
+            web3.eth.abi.encodeParameters(
+                ["address", "uint256", "bytes32"],
+                [
+                    params.bidderAddress,
+                    web3.utils.toWei(
+                        params.placedBid.value,
+                        params.placedBid.unit
+                    ),
+                    web3.utils.soliditySha3(params.salt),
+                ]
+            )
         );
     },
 
