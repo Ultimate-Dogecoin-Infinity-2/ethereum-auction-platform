@@ -1,6 +1,7 @@
 import AuctionCreation from "./AuctionCreation.js";
 import AuctionList from "./AuctionList.js";
 import AuctionCommit from "./AuctionCommit.js";
+import AuctionReveal from "./AuctionReveal.js";
 
 const ELEMS = {
     ACCOUNT: document.getElementById("account"),
@@ -12,6 +13,7 @@ const ROUTER = {
     "/auction_creation.html": AuctionCreation,
     "/auction_listing.html": AuctionList,
     "/auction_commiting.html": AuctionCommit,
+    "/auction_revealing.html": AuctionReveal,
 };
 
 const App = {
@@ -42,6 +44,10 @@ const App = {
 
     async onSubmit() {
         App.pathObject.onSubmit();
+    },
+
+    async passClick(...args) {
+        App.pathObject.passClick(...args);
     },
 
     async loadAccount() {
