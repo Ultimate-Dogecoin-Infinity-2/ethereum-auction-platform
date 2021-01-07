@@ -54,16 +54,7 @@ const AuctionReveal = {
             account
         );
         try {
-            await AuctionReveal.contract.revealBids(
-                params.bids.map((bid) => ({
-                    bidder: bid.bidderAddress,
-                    biddedPrice: web3.utils.toWei(
-                        bid.placedBid.value,
-                        bid.placedBid.unit
-                    ),
-                    salt: web3.utils.soliditySha3(bid.salt),
-                }))
-            );
+            await AuctionReveal.contract.withdraw(params.addresses);
         } catch (e) {
             console.error(e);
         }
@@ -76,36 +67,11 @@ const AuctionReveal = {
         const bidders = Array.from(
             document.getElementsByClassName(ELEMS.BIDDER_ADDRESS)
         );
-        const bids = Array.from(
-            document.getElementsByClassName(ELEMS.PLACED_BID)
-        );
-        const units = Array.from(
-            document.getElementsByClassName(ELEMS.PLACED_BID_UNIT)
-        );
-        const salts = Array.from(document.getElementsByClassName(ELEMS.SALT));
         return {
             auctionAddress: ELEMS.AUCTION_ADDRESS.value,
-            bids: bidders.map((bidder, index) => {
-                const [bid, unit, salt] = [
-                    bids[index],
-                    units[index],
-                    salts[index],
-                ];
-                if (
-                    !(bidder instanceof HTMLInputElement) ||
-                    !(bid instanceof HTMLInputElement) ||
-                    !(unit instanceof HTMLSelectElement) ||
-                    !(salt instanceof HTMLInputElement) ||
-                    false
-                ) {
-                    throw "error";
-                }
-                return {
-                    bidderAddress: bidder.value,
-                    placedBid: { value: String(bid.value), unit: unit.value },
-                    salt: salt.value,
-                };
-            }),
+            addresses: bidders.map((bidder) =>
+                bidder instanceof HTMLInputElement ? bidder.value : ""
+            ),
         };
     },
 };
