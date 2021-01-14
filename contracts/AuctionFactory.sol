@@ -9,9 +9,7 @@ contract AuctionFactory {
 
     event AuctionCreated(
         address auctionContract,
-        address owner,
-        uint256 numAuctions,
-        address[] allAuctions
+        address owner
     );
 
     function createAuction(
@@ -31,9 +29,7 @@ contract AuctionFactory {
         auctions.push(address(auction));
         emit AuctionCreated(
             address(auction),
-            _owner,
-            auctions.length,
-            auctions
+            _owner
         );
     }
 }
