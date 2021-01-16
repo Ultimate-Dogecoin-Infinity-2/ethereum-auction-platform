@@ -44,6 +44,12 @@ const AuctionList = {
             <div>Phase two from ${auctionInfo.phaseTwoStart.toLocaleString()} 
             to ${auctionInfo.phaseThreeStart.toLocaleString()}</div>
             <div> Starting price: ${auctionInfo.startingPrice} wei </div>
+            ${
+                new Date() > auctionInfo.phaseThreeStart
+                    ? `<div> Winner: ${auctionInfo.firstBidder} </div>
+                       <div> Final price: ${auctionInfo.secondPrice} </div>`
+                    : ""
+            }
             <h5> Description: </h5>
             <div> ${auctionInfo.description} </div>
         </div>`;
@@ -64,6 +70,10 @@ const AuctionList = {
             ),
             description: await contract.description(),
             startingPrice: await contract.startingPrice(),
+            secondPrice: await contract.secondPrice(),
+            firstBidder: await contract.revealedBids(
+                await contract.firstBidder()
+            ).returnAddress,
         };
     },
 };

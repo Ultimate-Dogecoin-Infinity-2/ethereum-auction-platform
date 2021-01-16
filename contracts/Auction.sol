@@ -10,9 +10,9 @@ contract Auction {
     uint256 public phaseTwoStart;
     uint256 public phaseThreeStart;
 
-    bytes32 firstBidder;
+    bytes32 public firstBidder;
     uint256 firstPrice;
-    uint256 secondPrice;
+    uint256 public secondPrice;
 
     bool ownerHasWithdrawn;
 
@@ -78,11 +78,16 @@ contract Auction {
 
     function placeBid(bytes32 bidHash) public payable onlyInPhaseOne {
         require(msg.value > 0, "Ether provided must be greater than 0");
-        require(frozenWeis[bidHash] == 0, "You cannot send the same hash twice");
+        require(
+            frozenWeis[bidHash] == 0,
+            "You cannot send the same hash twice"
+        );
         frozenWeis[bidHash] = msg.value;
     }
 
-    function isLastBetToBiddedPrice(Bid memory bid, uint256 weisRelatedToHash) internal pure
+    function isLastBetToBiddedPrice(Bid memory bid, uint256 weisRelatedToHash)
+        internal
+        pure
         returns (bool)
     {
         return
@@ -90,9 +95,7 @@ contract Auction {
             bid.revealedWeis - weisRelatedToHash < bid.biddedPrice;
     }
 
-    function setNewTopBets(bytes32 bidderId)
-        internal
-    {
+    function setNewTopBets(bytes32 bidderId) internal {
         Bid memory bid = revealedBids[bidderId];
         if (bid.biddedPrice > firstPrice) {
             secondPrice = firstPrice;
@@ -141,7 +144,12 @@ contract Auction {
             frozenWeis[bidHash] = 0;
             revealedBids[bid.bidderSecretId].revealedWeis += weisRelatedToHash;
 
-            if (isLastBetToBiddedPrice(revealedBids[bid.bidderSecretId], weisRelatedToHash)) {
+            if (
+                isLastBetToBiddedPrice(
+                    revealedBids[bid.bidderSecretId],
+                    weisRelatedToHash
+                )
+            ) {
                 setNewTopBets(bid.bidderSecretId);
             }
         }
