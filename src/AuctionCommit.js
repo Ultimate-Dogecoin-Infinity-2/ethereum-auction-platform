@@ -62,7 +62,7 @@ const AuctionCommit = {
             web3.eth.abi.encodeParameters(
                 ["bytes32", "address", "uint256", "uint256"],
                 [
-                    params.id,
+                    web3.utils.soliditySha3(params.id),
                     params.bidderAddress,
                     web3.utils.toWei(
                         params.placedBid.value,
