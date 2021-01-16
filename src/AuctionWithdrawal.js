@@ -72,7 +72,9 @@ const AuctionReveal = {
             if (dealer) {
                 await AuctionReveal.contract.withdrawDealer();
             } else {
-                await AuctionReveal.contract.withdrawBidder(params.addresses);
+                await AuctionReveal.contract.withdrawBidder(
+                    params.addresses.map((id) => web3.utils.soliditySha3(id))
+                );
             }
         } catch (e) {
             console.error(e);
