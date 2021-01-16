@@ -24,9 +24,12 @@
             <h1>Ethereum: Auction platform</h1>
             <h2>Account: <span id="account"></span></h2>
             <form onSubmit="App.onSubmit(); return false;">
-                <h3>Reveal bids</h3>
+                <h3>Withdraw funds</h3>
 
-                <button onclick="App.passClick()">Add bid reveal</button>
+                <button onclick="App.passClick(false)">Add bid withdraw</button>
+                <button onclick="App.passClick(true)">
+                    Withdraw as dealer
+                </button>
                 <div style="margin-bottom: 15px">
                     <label for="auctionAddress">Auction address: </label>
                     <input
@@ -39,7 +42,7 @@
                 <div>
                     <div id="template">
                         <div>
-                            <label for="bidderAddress">Bidder address: </label>
+                            <label for="bidderAddress">Id: </label>
                             <input
                                 required
                                 type="text"

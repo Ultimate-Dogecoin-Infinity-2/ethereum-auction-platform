@@ -33,12 +33,27 @@ const AuctionReveal = {
         AuctionReveal.callContract(
             AuctionReveal.web3provider,
             AuctionReveal.account,
-            params
+            params,
+            false
         );
     },
 
-    passClick() {
-        AuctionReveal.addBid();
+    passClick(dealerWithdraw) {
+        if (dealerWithdraw) {
+            AuctionReveal.dealerWithdraw();
+        } else {
+            AuctionReveal.addBid();
+        }
+    },
+
+    dealerWithdraw() {
+        const params = AuctionReveal.getParams();
+        AuctionReveal.callContract(
+            AuctionReveal.web3provider,
+            AuctionReveal.account,
+            params,
+            true
+        );
     },
 
     addBid() {
@@ -47,14 +62,18 @@ const AuctionReveal = {
         );
     },
 
-    async callContract(web3provider, account, params) {
+    async callContract(web3provider, account, params, dealer) {
         AuctionReveal.contract = await createAuctionContract(
             web3provider,
             params.auctionAddress,
             account
         );
         try {
-            await AuctionReveal.contract.withdraw(params.addresses);
+            if (dealer) {
+                await AuctionReveal.contract.withdrawDealer();
+            } else {
+                await AuctionReveal.contract.withdrawBidder(params.addresses);
+            }
         } catch (e) {
             console.error(e);
         }
