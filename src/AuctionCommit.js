@@ -12,6 +12,7 @@ const ELEMS = {
     FROZEN_WEIS: document.getElementById("frozenWeis"),
     FROZEN_WEIS_UNIT: document.getElementById("frozenWeisUnit"),
     SALT: document.getElementById("salt"),
+    ID: document.getElementById("id"),
 };
 
 const AuctionCommit = {
@@ -59,8 +60,9 @@ const AuctionCommit = {
     computeHash(params) {
         return web3.utils.soliditySha3(
             web3.eth.abi.encodeParameters(
-                ["address", "uint256", "bytes32"],
+                ["bytes32", "address", "uint256", "uint256"],
                 [
+                    params.id,
                     params.bidderAddress,
                     web3.utils.toWei(
                         params.placedBid.value,
@@ -81,6 +83,7 @@ const AuctionCommit = {
             !(ELEMS.FROZEN_WEIS instanceof HTMLInputElement) ||
             !(ELEMS.FROZEN_WEIS_UNIT instanceof HTMLSelectElement) ||
             !(ELEMS.SALT instanceof HTMLInputElement) ||
+            !(ELEMS.ID instanceof HTMLInputElement) ||
             false
         ) {
             throw "error";
@@ -97,6 +100,7 @@ const AuctionCommit = {
                 unit: ELEMS.FROZEN_WEIS_UNIT.value,
             },
             salt: ELEMS.SALT.value,
+            id: ELEMS.ID.value,
         };
     },
 };
