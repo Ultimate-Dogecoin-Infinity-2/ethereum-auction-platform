@@ -10,6 +10,7 @@ const ELEMS = {
     PLACED_BID: "placedBid",
     PLACED_BID_UNIT: "placedBidUnit",
     SALT: "salt",
+    ID: "id",
     TEMPLATE: document.getElementById("template"),
 };
 
@@ -56,7 +57,8 @@ const AuctionReveal = {
         try {
             await AuctionReveal.contract.revealBids(
                 params.bids.map((bid) => ({
-                    bidder: bid.bidderAddress,
+                    bidderSecretId: web3.utils.soliditySha3(bid.id),
+                    returnAddress: bid.bidderAddress,
                     biddedPrice: web3.utils.toWei(
                         bid.placedBid.value,
                         bid.placedBid.unit
@@ -82,11 +84,14 @@ const AuctionReveal = {
         const units = Array.from(
             document.getElementsByClassName(ELEMS.PLACED_BID_UNIT)
         );
+        const ids = Array.from(document.getElementsByClassName(ELEMS.ID));
+
         const salts = Array.from(document.getElementsByClassName(ELEMS.SALT));
         return {
             auctionAddress: ELEMS.AUCTION_ADDRESS.value,
             bids: bidders.map((bidder, index) => {
-                const [bid, unit, salt] = [
+                const [id, bid, unit, salt] = [
+                    ids[index],
                     bids[index],
                     units[index],
                     salts[index],
@@ -96,11 +101,13 @@ const AuctionReveal = {
                     !(bid instanceof HTMLInputElement) ||
                     !(unit instanceof HTMLSelectElement) ||
                     !(salt instanceof HTMLInputElement) ||
+                    !(id instanceof HTMLInputElement) ||
                     false
                 ) {
                     throw "error";
                 }
                 return {
+                    id: id.value,
                     bidderAddress: bidder.value,
                     placedBid: { value: String(bid.value), unit: unit.value },
                     salt: salt.value,
