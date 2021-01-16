@@ -43,6 +43,7 @@ const AuctionList = {
             <h4>Address: ${address}</h4>
             <div>Phase two from ${auctionInfo.phaseTwoStart.toLocaleString()} 
             to ${auctionInfo.phaseThreeStart.toLocaleString()}</div>
+            <div> Starting price: ${auctionInfo.startingPrice} wei </div>
             <h5> Description: </h5>
             <div> ${auctionInfo.description} </div>
         </div>`;
@@ -62,6 +63,7 @@ const AuctionList = {
                 (await contract.phaseThreeStart()).toNumber() * 1000
             ),
             description: await contract.description(),
+            startingPrice: await contract.startingPrice(),
         };
     },
 };
