@@ -1,98 +1,88 @@
 const AuctionFactory = artifacts.require("./AuctionFactory.sol");
 const Auction = artifacts.require("./Auction.sol")
 
+const salt = "salt";
+const returnAddress = "0x29aCFcBdA0E899076371943A84A383Ec1472aF2A";
+
 const bids = {
     wojtek: [{
-        id: web3.utils.asciiToHex("random"),
-        bidderAddress: "0x29aCFcBdA0E899076371943A84A383Ec1472aF2A",
-        placedBid: {
-            value: "2",
-            unit: "wei"
-        },
-        salt: "78b3f39738755b8d77efa787e298ed953b57f49ad55f9139597676eb2eefdbd0"
+        bidderSecretId: "wojtek",
+        returnAddress,
+        biddedPrice: 2,
+        salt,
     }, {
-        id: "78b3f39738755b8d77efa787e298ed953b57f49ad55f9139597676eb2eefdbd0",
-        bidderAddress: "0x29aCFcBdA0E899076371943A84A383Ec1472aF2A",
-        placedBid: {
-            value: "4",
-            unit: "wei"
-        },
-        salt: "78b3f39738755b8d77efa787e298ed953b57f49ad55f9139597676eb2eefdbd0"
+        bidderSecretId: "wojtek",
+        returnAddress,
+        biddedPrice: 4,
+        salt
     }, {
-        id: "78b3f39738755b8d77efa787e298ed953b57f49ad55f9139597676eb2eefdbd0",
-        bidderAddress: "0x29aCFcBdA0E899076371943A84A383Ec1472aF2A",
-        placedBid: {
-            value: "8",
-            unit: "wei"
-        },
-        salt: "78b3f39738755b8d77efa787e298ed953b57f49ad55f9139597676eb2eefdbd0"
-    }], 
-
+        bidderSecretId: "wojtek",
+        returnAddress,
+        biddedPrice: 8,
+        salt
+    }],
 
     maucin: [{
-        id: "59c2cc2a4eeca3572f88bd729e4eab544c17be2b0a85f36ca94dcfeba3ce123c38a5080530b4a6863fdc4af0b03831356b8d07de8bf5e61e0aede1eda6a46846",
-        bidderAddress: "0x29aCFcBdA0E899076371943A84A383Ec1472aF2A",
-        placedBid: {
-            value: "2",
-            unit: "wei"
-        },
-        salt: "78b3f39738755b8d77efa787e298ed953b57f49ad55f9139597676eb2eefdbd0"
+        bidderSecretId: "maucin",
+        returnAddress,
+        biddedPrice: 2,
+        salt,
     }, {
-        id: "3572f88bd729e4eab544c17be2b0a85f36ca94dcfeba3ce123c38a5080530b4a",
-        returnAddress: "0x29aCFcBdA0E899076371943A84A383Ec1472aF2A",
-        biddedPrice: {
-            value: "4",
-            unit: "wei"
-        },
-        salt: "78b3f39738755b8d77efa787e298ed953b57f49ad55f9139597676eb2eefdbd0"
+        bidderSecretId: "maucin",
+        returnAddress,
+        biddedPrice: 4,
+        salt
     }, {
-        bidderSecretId: "3572f88bd729e4eab544c17be2b0a85f36ca94dcfeba3ce123c38a5080530b4a",
-        returnAddress: "0x29aCFcBdA0E899076371943A84A383Ec1472aF2A",
+        bidderSecretId: "maucin",
+        returnAddress,
         biddedPrice: 8,
-        salt: web3.utils.asciiToHex("random")
-    }], 
+        salt
+    }],
 
 
     krzys: [{
-        id: "0f4239df6e429436371954a3c653442c97be08bcb8a03fcfb48c6ad0686a22db",
-        bidderAddress: "0x29aCFcBdA0E899076371943A84A383Ec1472aF2A",
-        placedBid: {
-            value: "2",
-            unit: "wei"
-        },
-        salt: "78b3f39738755b8d77efa787e298ed953b57f49ad55f9139597676eb2eefdbd0"
+        bidderSecretId: "krzys",
+        returnAddress,
+        biddedPrice: 2,
+        salt,
     }, {
-        id: "0f4239df6e429436371954a3c653442c97be08bcb8a03fcfb48c6ad0686a22db",
-        bidderAddress: "0x29aCFcBdA0E899076371943A84A383Ec1472aF2A",
-        placedBid: {
-            value: "4",
-            unit: "wei"
-        },
-        salt: "78b3f39738755b8d77efa787e298ed953b57f49ad55f9139597676eb2eefdbd0"
+        bidderSecretId: "krzys",
+        returnAddress,
+        biddedPrice: 4,
+        salt
     }, {
-        id: "0f4239df6e429436371954a3c653442c97be08bcb8a03fcfb48c6ad0686a22db",
-        bidderAddress: "0x29aCFcBdA0E899076371943A84A383Ec1472aF2A",
-        placedBid: {
-            value: "8",
-            unit: "wei"
-        },
-        salt: "78b3f39738755b8d77efa787e298ed953b57f49ad55f9139597676eb2eefdbd0"
-    }], 
+        bidderSecretId: "krzys",
+        returnAddress,
+        biddedPrice: 8,
+        salt
+    }],
+
+
 }
 
 const computeHash = (params) => {
     return web3.utils.soliditySha3(
         web3.eth.abi.encodeParameters(
-            ["bytes32", "address", "uint256", "bytes32"],
+            ["bytes32", "address", "uint256", "uint256"],
             [
-                web3.utils.soliditySha3(params.id),
-                params.bidderAddress,
-                params.bidderPrice,
+                web3.utils.soliditySha3(params.bidderSecretId),
+                params.returnAddress,
+                params.biddedPrice,
                 web3.utils.soliditySha3(params.salt),
             ]
         )
     );
 };
+
+const revealBids = async (bid) => {
+    params = {
+        bidderSecretId: web3.utils.soliditySha3(bid.bidderSecretId),
+        returnAddress: bid.returnAddress,
+        biddedPrice: bid.biddedPrice,
+        salt: web3.utils.soliditySha3(bid.salt)
+    }
+    await this.auction.revealBids([params]);
+}
 
 const advanceBlockAtTime = (time) => {
     return new Promise((resolve, reject) => {
@@ -117,7 +107,7 @@ const advanceBlockAtTime = (time) => {
 
 
 const placeBid = async (bid, value) => {
-    return await this.auction.placeBid(computeHash(bid), {value: value});
+    return await this.auction.placeBid(computeHash(bid), { value: value });
 }
 
 const timeNow = Math.floor(Date.now() / 1000)
@@ -186,13 +176,23 @@ contract("AuctionFactory", (accounts) => {
         }
     });
 
-    // it("reveal nonexisting bet exception", async () => {
-    //     try {
-    //         await this.auction.revealBids([bids["maucin"][2]]);
-    //         assert.fail("Exception should be thrown")
-    //     }
-    //     catch (e) {
-    //         assert.equal(e.message, "Returned error: VM Exception while processing transaction: revert This action is only avalible in phase one -- Reason given: This action is only avalible in phase one.");
-    //     }
-    // })
+    it("reveal nonexisting bet exception", async () => {
+        try {
+            await revealBids(bids["maucin"][2]);
+            assert.fail("Exception should be thrown")
+        }
+        catch (e) {
+            assert.equal(e.message, "Returned error: VM Exception while processing transaction: revert You cannot reveal the same hash twice or send unexisting reveal -- Reason given: You cannot reveal the same hash twice or send unexisting reveal.");
+        }
+    })
+
+    it("reveal hashes", async () => {
+        try {
+            await revealBids(bids["maucin"][2]);
+            assert.fail("Exception should be thrown")
+        }
+        catch (e) {
+            assert.equal(e.message, "Returned error: VM Exception while processing transaction: revert You cannot reveal the same hash twice or send unexisting reveal -- Reason given: You cannot reveal the same hash twice or send unexisting reveal.");
+        }
+    })
 });
