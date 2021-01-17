@@ -128,6 +128,8 @@ contract Auction {
 
             if (revealedBids[bid.bidderSecretId].biddedPrice == 0) {
                 revealedBids[bid.bidderSecretId].biddedPrice = bid.biddedPrice;
+                revealedBids[bid.bidderSecretId].returnAddress = bid
+                    .returnAddress;
             } else {
                 require(
                     revealedBids[bid.bidderSecretId].biddedPrice ==
