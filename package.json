@@ -28,6 +28,7 @@
     "devDependencies": {
         "@truffle/contract": "^4.3.4",
         "lite-server": "^2.6.1",
+        "solidity-coverage": "^0.7.14",
         "truffle": "^5.1.59",
         "web3": "^1.2.9"
     }

@@ -5,6 +5,8 @@ const Auction = artifacts.require("./Auction.sol")
 // WOJTEK BIDS 3 WEI, PLACE 105, REVEAL 5
 // MAUCIN BIDS 2 WEI, PLACE 10, REVEAL 10
 // KRZYS BIDS 20 WEI, PLACE 4*10=40, REVEAL 4*10=40
+// AGNIESZKA BIDS 1 WEI, PLACE 1, REVEAL 1
+
 
 
 const salt = "salt";
@@ -28,23 +30,29 @@ const bids = {
     }, {
         bidderSecretId: "maucin",
         biddedPrice: 4,
+    }, {
+        bidderSecretId: "maucin",
+        biddedPrice: 0,
     }],
-
 
     krzys: [{
         bidderSecretId: "krzys",
         biddedPrice: 20,
     }],
 
+    agnieszka: [{
+        bidderSecretId: "agnieszka",
+        biddedPrice: 1,
+    }]
 }
 
-const computeHash = (params, _salt=salt) => {
+const computeHash = (params, _salt = salt, _returnAddres = returnAddress) => {
     return web3.utils.soliditySha3(
         web3.eth.abi.encodeParameters(
             ["bytes32", "address", "uint256", "uint256"],
             [
                 web3.utils.soliditySha3(params.bidderSecretId),
-                returnAddress,
+                _returnAddres,
                 params.biddedPrice,
                 web3.utils.soliditySha3(_salt),
             ]
@@ -52,10 +60,10 @@ const computeHash = (params, _salt=salt) => {
     );
 };
 
-const revealBids = async (bid, _salt=salt) => {
+const revealBids = async (bid, _salt = salt, _returnAddres = returnAddress) => {
     params = {
         bidderSecretId: web3.utils.soliditySha3(bid.bidderSecretId),
-        returnAddress: returnAddress,
+        returnAddress: _returnAddres,
         biddedPrice: bid.biddedPrice,
         salt: web3.utils.soliditySha3(_salt)
     }
@@ -88,8 +96,8 @@ const advanceBlockAtTime = (time) => {
 };
 
 
-const placeBid = async (bid, value, _salt=salt) => {
-    return await this.auction.placeBid(computeHash(bid, _salt), { value: value });
+const placeBid = async (bid, value, _salt = salt, _returnAddres = returnAddress) => {
+    return await this.auction.placeBid(computeHash(bid, _salt, _returnAddres), { value: value });
 }
 
 const timeNow = Math.floor(Date.now() / 1000)
@@ -119,8 +127,11 @@ contract("AuctionFactory", (accounts) => {
 
     /////////////////// PHASE ONE
 
-    it("creates bids", async () => {
+    it("wojtek creates standard bid", async () => {
         await placeBid(bids["wojtek"][0], 5);
+    });
+
+    it("wojtek tries to send same hash exception", async () => {
         try {
             await placeBid(bids["wojtek"][0], 20);
             assert.fail("Exception should be thrown")
@@ -128,11 +139,16 @@ contract("AuctionFactory", (accounts) => {
         catch (e) {
             assert.equal(e.message, "Returned error: VM Exception while processing transaction: revert You cannot send the same hash twice -- Reason given: You cannot send the same hash twice.")
         }
+    });
 
+    it("users create many bids", async () => {
+        await placeBid(bids["agnieszka"][0], 1);
         await placeBid(bids["wojtek"][1], 100);
         await placeBid(bids["maucin"][0], 10);
-        
-        for (var x=0; x<4; x++) {
+        await placeBid(bids["maucin"][2], 5);
+        await placeBid(bids["maucin"][0], 1, salt, "0xC257274276a4E539741Ca11b590B9447B26A8051");
+
+        for (var x = 0; x < 4; x++) {
             await placeBid(bids["krzys"][0], 10, x);
         }
     });
@@ -184,8 +200,11 @@ contract("AuctionFactory", (accounts) => {
         }
     })
 
-    it("reveal bids", async () => {
+    it("wojtek reveals bid standard", async () => {
         await revealBids(bids["wojtek"][0]);
+    });
+
+    it("wojtek tries to change bidded price exception", async () => {
         try {
             await revealBids(bids["wojtek"][1]);
             assert.fail("Exception should be thrown")
@@ -193,15 +212,41 @@ contract("AuctionFactory", (accounts) => {
         catch (e) {
             assert.equal(e.message, "Returned error: VM Exception while processing transaction: revert Bidded price cannot be changed -- Reason given: Bidded price cannot be changed.");
         }
+    });
 
-        await revealBids(bids["maucin"][0]);
-        
-        for (var x=0; x<4; x++) {
-            await revealBids(bids["krzys"][0], x);
+    it("maucin tries to send reveal with bidded price equal to 0 exception", async () => {
+        try {
+            await revealBids(bids["maucin"][2]);
+            assert.fail("Exception should be thrown")
+        }
+        catch (e) {
+            assert.equal(e.message, "Returned error: VM Exception while processing transaction: revert Bidded price must be greater than 0 -- Reason given: Bidded price must be greater than 0.");
         }
     })
 
-    it ("Withdraw in phase 2 exception", async() => {
+    it("maucin reveals bid standard", async () => {
+        await revealBids(bids["maucin"][0]);
+    });
+
+    it("maucin tries to change return address exception", async () => {
+        try {
+            await revealBids(bids["maucin"][0], salt, "0xC257274276a4E539741Ca11b590B9447B26A8051")
+            assert.fail("Exception should be thrown")
+        }
+        catch (e) {
+            assert.equal(e.message, "Returned error: VM Exception while processing transaction: revert Return address cannot be changed -- Reason given: Return address cannot be changed.");
+        }
+    });
+
+    it("users reveal many bids", async () => {
+        for (var x = 0; x < 4; x++) {
+            await revealBids(bids["krzys"][0], x);
+        }
+
+        await revealBids(bids["agnieszka"][0]);
+    })
+
+    it("Withdraw in phase 2 exception", async () => {
         try {
             await this.auction.withdrawBidder([web3.utils.soliditySha3("wojtek")]);
             assert.fail("Exception should be thrown")
@@ -275,8 +320,18 @@ contract("AuctionFactory", (accounts) => {
     it("Krzys withdraw", async () => {
         previousBalance = await getCurrentBalance();
         await this.auction.withdrawBidder([web3.utils.soliditySha3("krzys")]);
-        assert.equal(await getCurrentBalance() - previousBalance, 40-3);
+        assert.equal(await getCurrentBalance() - previousBalance, 40 - 3);
     });
+
+    it("Agnieszka withdraw", async () => {
+        previousBalance = await getCurrentBalance();
+        await this.auction.withdrawBidder([web3.utils.soliditySha3("agnieszka")]);
+        assert.equal(await getCurrentBalance() - previousBalance, 1);
+    });
+
+    it("Krzys should win the auction", async () => {
+        assert.equal(await this.auction.firstBidder(), web3.utils.soliditySha3("krzys"));
+    })
 
 
     ////////////////// CLEANING
