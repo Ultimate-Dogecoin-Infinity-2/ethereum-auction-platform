@@ -44,7 +44,7 @@ contract Auction {
         uint256 _startingPrice,
         address payable _owner
     ) public {
-        require(!initialized, 'Auction is already initialized!');
+        require(!initialized, "Auction is already initialized");
         initialized = true;
         phaseTwoStart = _phaseTwoStart;
         phaseThreeStart = _phaseThreeStart;
@@ -57,8 +57,7 @@ contract Auction {
 
     modifier onlyInPhaseOne {
         require(
-            initialized &&
-                block.timestamp < phaseTwoStart,
+            block.timestamp < phaseTwoStart,
             "This action is only avalible in phase one"
         );
         _;
@@ -66,8 +65,7 @@ contract Auction {
 
     modifier onlyInPhaseTwo {
         require(
-            initialized &&
-                block.timestamp >= phaseTwoStart &&
+            block.timestamp >= phaseTwoStart &&
                 block.timestamp < phaseThreeStart,
             "This action is only avalible in phase two"
         );
@@ -76,8 +74,7 @@ contract Auction {
 
     modifier onlyInPhaseThree {
         require(
-            initialized &&
-                block.timestamp >= phaseThreeStart,
+            block.timestamp >= phaseThreeStart,
             "This action is only avalible in phase three"
         );
         _;
@@ -104,7 +101,10 @@ contract Auction {
 
     function setNewTopBets(bytes32 bidderId) internal {
         Bid memory bid = revealedBids[bidderId];
-        if (bid.biddedPrice > firstPrice) {
+        if (
+            bid.biddedPrice > firstPrice ||
+            (bid.biddedPrice == firstPrice && firstBidder == 0)
+        ) {
             secondPrice = firstPrice;
             firstPrice = bid.biddedPrice;
             firstBidder = bidderId;
@@ -116,6 +116,10 @@ contract Auction {
     function revealBids(BidReveal[] memory bidReveal) public onlyInPhaseTwo {
         for (uint256 i = 0; i < bidReveal.length; i++) {
             BidReveal memory bid = bidReveal[i];
+
+            require(bid.bidderSecretId != 0, "Secret id cannot be 0");
+            require(bid.biddedPrice > 0, "Bidded price must be greater than 0");
+
             bytes32 bidHash =
                 keccak256(
                     abi.encode(
@@ -131,7 +135,6 @@ contract Auction {
                 weisRelatedToHash > 0,
                 "You cannot reveal the same hash twice or send unexisting reveal"
             );
-            require(bid.biddedPrice > 0, "Bidded price must be greater than 0");
 
             if (revealedBids[bid.bidderSecretId].biddedPrice == 0) {
                 revealedBids[bid.bidderSecretId].biddedPrice = bid.biddedPrice;
@@ -189,6 +192,10 @@ contract Auction {
 
     function withdrawDealer() public onlyInPhaseThree {
         require(!ownerHasWithdrawn, "Owner cannot withdraw money twice");
+        require(
+            firstBidder != 0,
+            "You cannot withdraw money if no one won the auction"
+        );
         ownerHasWithdrawn = true;
         owner.transfer(secondPrice);
     }
