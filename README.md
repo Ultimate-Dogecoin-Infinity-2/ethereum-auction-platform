@@ -1,6 +1,11 @@
 # Ethereum: Auction platform
 
+[![License GPL3](https://img.shields.io/badge/license-GPL3-green)](LICENSE)
+[![100% Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)](test/Auction.test.js)
+
 Student project for blockchain fundamentals course.
+
+[Documentation (PL)](Dokumentacja.md)
 
 ## Planned functionalities
 
