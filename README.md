@@ -36,3 +36,5 @@ Full description of the project can be found here: [Documentation (PL)](Dokument
 -   [Wojciech Buczek](https://github.com/Wowol)
 -   [Krzysztof Pióro](https://github.com/krzysztofpioro)
 -   [Marcin Serwin](https://github.com/marcin-serwin)
+
+[![Fractal Doge](https://media4.giphy.com/media/54Vj1kxvgyF4k/giphy.gif)](http://gph.is/1fDc0lE)
