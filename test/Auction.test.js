@@ -13,6 +13,12 @@ const salt = "salt";
 const returnAddress = "0xDC25EF3F5B8A186998338A2ADA83795FBA2D695E";
 
 const bids = {
+
+    zero: {
+        bidderSecretId: 0,
+        biddedPrice: 6
+    },
+
     wojtek: [{
         bidderSecretId: "wojtek",
         biddedPrice: 3,
@@ -46,12 +52,16 @@ const bids = {
     }]
 }
 
+function toBytes32(v) {
+    return web3.utils.padLeft(web3.utils.toHex(v), 64);
+}
+
 const computeHash = (params, _salt = salt, _returnAddres = returnAddress) => {
     return web3.utils.soliditySha3(
         web3.eth.abi.encodeParameters(
             ["bytes32", "address", "uint256", "uint256"],
             [
-                web3.utils.soliditySha3(params.bidderSecretId),
+                toBytes32(params.bidderSecretId),
                 _returnAddres,
                 params.biddedPrice,
                 web3.utils.soliditySha3(_salt),
@@ -62,7 +72,7 @@ const computeHash = (params, _salt = salt, _returnAddres = returnAddress) => {
 
 const revealBids = async (bid, _salt = salt, _returnAddres = returnAddress) => {
     params = {
-        bidderSecretId: web3.utils.soliditySha3(bid.bidderSecretId),
+        bidderSecretId: toBytes32(bid.bidderSecretId),
         returnAddress: _returnAddres,
         biddedPrice: bid.biddedPrice,
         salt: web3.utils.soliditySha3(_salt)
@@ -103,7 +113,7 @@ const placeBid = async (bid, value, _salt = salt, _returnAddres = returnAddress)
 const timeNow = Math.floor(Date.now() / 1000)
 
 
-contract("AuctionFactory", (accounts) => {
+contract("Standard auction", (accounts) => {
 
     before(async () => {
         await advanceBlockAtTime(timeNow);
@@ -125,6 +135,16 @@ contract("AuctionFactory", (accounts) => {
         assert.notEqual(this.auction, undefined);
     });
 
+    it("Try to initialize again exception", async () => {
+        try {
+            await this.auction.initialize(0, 0, "", 0, returnAddress);
+            assert.fail("Exception should be thrown")
+        }
+        catch (e) {
+            assert.equal(e.message, "Returned error: VM Exception while processing transaction: revert Auction is already initialized -- Reason given: Auction is already initialized.")
+        }
+    });
+
     /////////////////// PHASE ONE
 
     it("wojtek creates standard bid", async () => {
@@ -142,6 +162,8 @@ contract("AuctionFactory", (accounts) => {
     });
 
     it("users create many bids", async () => {
+        await placeBid(bids["zero"], 5);
+
         await placeBid(bids["agnieszka"][0], 1);
         await placeBid(bids["wojtek"][1], 100);
         await placeBid(bids["maucin"][0], 10);
@@ -197,6 +219,16 @@ contract("AuctionFactory", (accounts) => {
         }
         catch (e) {
             assert.equal(e.message, "Returned error: VM Exception while processing transaction: revert You cannot reveal the same hash twice or send unexisting reveal -- Reason given: You cannot reveal the same hash twice or send unexisting reveal.");
+        }
+    })
+
+    it("reveal bet with id 0 exception", async () => {
+        try {
+            await revealBids(bids["zero"]);
+            assert.fail("Exception should be thrown")
+        }
+        catch (e) {
+            assert.equal(e.message, "Returned error: VM Exception while processing transaction: revert Secret id cannot be 0 -- Reason given: Secret id cannot be 0.");
         }
     })
 
@@ -301,38 +333,87 @@ contract("AuctionFactory", (accounts) => {
 
     it("Wojtek withdraw", async () => {
         previousBalance = await getCurrentBalance();
-        await this.auction.withdrawBidder([web3.utils.soliditySha3("wojtek")]);
+        await this.auction.withdrawBidder([toBytes32("wojtek")]);
         assert.equal(await getCurrentBalance() - previousBalance, 5);
     });
 
     it("Second Wojtek withdraw", async () => {
         previousBalance = await getCurrentBalance();
-        await this.auction.withdrawBidder([web3.utils.soliditySha3("wojtek")]);
+        await this.auction.withdrawBidder([toBytes32("wojtek")]);
         assert.equal(await getCurrentBalance() - previousBalance, 0);
     });
 
     it("Maucin withdraw", async () => {
         previousBalance = await getCurrentBalance();
-        await this.auction.withdrawBidder([web3.utils.soliditySha3("maucin")]);
+        await this.auction.withdrawBidder([toBytes32("maucin")]);
         assert.equal(await getCurrentBalance() - previousBalance, 10);
     });
 
     it("Krzys withdraw", async () => {
         previousBalance = await getCurrentBalance();
-        await this.auction.withdrawBidder([web3.utils.soliditySha3("krzys")]);
+        await this.auction.withdrawBidder([toBytes32("krzys")]);
         assert.equal(await getCurrentBalance() - previousBalance, 40 - 3);
     });
 
     it("Agnieszka withdraw", async () => {
         previousBalance = await getCurrentBalance();
-        await this.auction.withdrawBidder([web3.utils.soliditySha3("agnieszka")]);
+        await this.auction.withdrawBidder([toBytes32("agnieszka")]);
         assert.equal(await getCurrentBalance() - previousBalance, 1);
     });
 
     it("Krzys should win the auction", async () => {
-        assert.equal(await this.auction.firstBidder(), web3.utils.soliditySha3("krzys"));
+        assert.equal(await this.auction.firstBidder(), toBytes32("krzys"));
     })
 
+
+
+    ////////////////// CLEANING
+
+    it("Restore ganache timestamp", async () => {
+        await advanceBlockAtTime(Math.floor(Date.now() / 1000));
+    });
+
+});
+
+contract("Bad auctions", (accounts) => {
+    it("Add broken phase 2 auction exception", async () => {
+        try {
+            await this.auctionFactory.createAuction(timeNow - 100,
+                timeNow + 10000, "Sample description", 0, returnAddress)
+            assert.fail("Exception should be thrown")
+        }
+        catch (e) {
+            assert.equal(e.message, "Returned error: VM Exception while processing transaction: revert Phase two should be in future -- Reason given: Phase two should be in future.");
+        }
+    });
+
+    it("Add broken phase 3 auction exception", async () => {
+        try {
+            await this.auctionFactory.createAuction(timeNow + 100,
+                timeNow + 50, "Sample description", 0, returnAddress)
+            assert.fail("Exception should be thrown")
+        }
+        catch (e) {
+            assert.equal(e.message, "Returned error: VM Exception while processing transaction: revert Phase three should be after phase two -- Reason given: Phase three should be after phase two.");
+        }
+    });
+});
+
+contract("Auction without winner", (accounts) => {
+    it("Dealer cannot withdraw money exception", async () => {
+        await this.auctionFactory.createAuction(Math.floor(Date.now() / 1000) + 1000,
+            Math.floor(Date.now() / 1000) + 10000, "Sample description", 10, returnAddress)
+        await advanceBlockAtTime(Math.floor(Date.now() / 1000) + 20000);
+
+        try {
+            await (await Auction.at(await this.auctionFactory.auctions(0))).withdrawDealer()
+            assert.fail("Exception should be thrown")
+        }
+        catch (e) {
+            assert.equal(e.message, "Returned error: VM Exception while processing transaction: revert You cannot withdraw money if no one won the auction -- Reason given: You cannot withdraw money if no one won the auction.");
+        }
+
+    });
 
     ////////////////// CLEANING
 
