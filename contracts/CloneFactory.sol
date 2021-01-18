@@ -1,7 +1,7 @@
-// SPDX-License-Identifier: MIT
-// source: https://github.com/optionality/clone-factory/blob/master/contracts/CloneFactory.sol
-pragma solidity ^0.8.0;
+// SPDX-License-Identifier: GPL-3.0-or-later
 
+// Based on: https://github.com/optionality/clone-factory/blob/master/contracts/CloneFactory.sol
+// Original license: MIT
 /*
 The MIT License (MIT)
 Copyright (c) 2018 Murray Software, LLC.
@@ -24,6 +24,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 //solhint-disable max-line-length
 //solhint-disable no-inline-assembly
+pragma solidity ^0.8.0;
 
 contract CloneFactory {
     function createClone(address target) internal returns (address result) {
