@@ -1,3 +1,5 @@
+![Ultimate Dogecoin Infinity 2](team-logo.png)
+
 # Ethereum: Auction platform
 
 [![License GPL3](https://img.shields.io/badge/license-GPL3-green)](LICENSE)
@@ -38,3 +40,11 @@ Full description of the project can be found here: [Documentation (PL)](Dokument
 -   [Marcin Serwin](https://github.com/marcin-serwin)
 
 [![Fractal Doge](https://media4.giphy.com/media/54Vj1kxvgyF4k/giphy.gif)](http://gph.is/1fDc0lE)
+
+## Licenses and acknowledgments
+
+Project code is distributed under the [GPL3 License](https://www.gnu.org/licenses/gpl-3.0.html). See [LICENSE](LICENSE) for more information.
+
+Ultimate Dogecoin Infinity 2 logo is distributed under [CC BY-SA 2.5](https://creativecommons.org/licenses/by-sa/2.5/)
+
+Fractal doge gif is distributed directly via [Giphy](http://gph.is/1fDc0lE) service.
