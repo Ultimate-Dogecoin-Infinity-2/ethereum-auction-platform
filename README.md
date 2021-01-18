@@ -1,4 +1,4 @@
-![Ultimate Dogecoin Infinity 2](team-logo.png)
+<p align="center"><img width=30% src="team-logo.png">
 
 # Ethereum: Auction platform
 
