@@ -1,4 +1,4 @@
-<p align="center"><img width=30% src="team-logo.png">
+<p align="center"><img width=60% src="team-logo.png">
 
 # Ethereum: Auction platform
 
