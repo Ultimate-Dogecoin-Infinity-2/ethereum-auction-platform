@@ -2,15 +2,21 @@
 pragma solidity ^0.8.0;
 
 import {Auction} from "./Auction.sol";
+import {CloneFactory} from './CloneFactory.sol';
 
 
-contract AuctionFactory {
+contract AuctionFactory is CloneFactory {
+    address public implementation;
     address[] public auctions;
 
     event AuctionCreated(
         address auctionContract,
         address owner
     );
+
+    constructor(address _implementation) {
+        implementation = _implementation;
+    }
 
     function createAuction(
         uint256 _phaseTwoStart,
@@ -19,16 +25,17 @@ contract AuctionFactory {
         uint256 _startingPrice,
         address payable _owner
     ) public {
-        Auction auction = new Auction(
+        address auction = createClone(implementation);
+        Auction(auction).initialize(
             _phaseTwoStart,
             _phaseThreeStart,
             _description,
             _startingPrice,
             _owner
         );
-        auctions.push(address(auction));
+        auctions.push(auction);
         emit AuctionCreated(
-            address(auction),
+            auction,
             _owner
         );
     }

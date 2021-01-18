@@ -2,6 +2,8 @@
 pragma solidity ^0.8.0;
 
 contract Auction {
+    bool initialized = false;
+
     address payable owner;
     string public description;
 
@@ -35,13 +37,15 @@ contract Auction {
     // Mapping from bidderSecretId to Bid
     mapping(bytes32 => Bid) public revealedBids;
 
-    constructor(
+    function initialize(
         uint256 _phaseTwoStart,
         uint256 _phaseThreeStart,
         string memory _description,
         uint256 _startingPrice,
         address payable _owner
-    ) {
+    ) public {
+        require(!initialized, 'Auction is already initialized!');
+        initialized = true;
         phaseTwoStart = _phaseTwoStart;
         phaseThreeStart = _phaseThreeStart;
         description = _description;
@@ -53,7 +57,8 @@ contract Auction {
 
     modifier onlyInPhaseOne {
         require(
-            block.timestamp < phaseTwoStart,
+            initialized &&
+                block.timestamp < phaseTwoStart,
             "This action is only avalible in phase one"
         );
         _;
@@ -61,7 +66,8 @@ contract Auction {
 
     modifier onlyInPhaseTwo {
         require(
-            block.timestamp >= phaseTwoStart &&
+            initialized &&
+                block.timestamp >= phaseTwoStart &&
                 block.timestamp < phaseThreeStart,
             "This action is only avalible in phase two"
         );
@@ -70,7 +76,8 @@ contract Auction {
 
     modifier onlyInPhaseThree {
         require(
-            block.timestamp >= phaseThreeStart,
+            initialized &&
+                block.timestamp >= phaseThreeStart,
             "This action is only avalible in phase three"
         );
         _;
