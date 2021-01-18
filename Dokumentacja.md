@@ -1,4 +1,6 @@
-# Wstęp
+# Ethereum: Auction platform - Dokumentacja
+
+## Wstęp
 
 Przedstawiamy aplikację obsługującą aukcję drugiej ceny na blockchainie Ethereum.
 Składa się ona ze smart kontraktu aukcji oraz aplikacji po stronie klienta umożliwiającej
@@ -18,7 +20,7 @@ Specyfikacja:
 
 -footnote: opis faz zostanie przedstawiony w dalszej części raportu
 
-# Aukcja drugiej ceny na blockchainie
+## Aukcja drugiej ceny na blockchainie
 
 W aukcji drugiej ceny uczestnicy aukcji jednocześnie zgłaszają swoje
 odzywki. Zwycięzcą takiej aukcji zostaje gracz, który zgłosił największą
@@ -41,7 +43,7 @@ poprzez wysyłanie zahaszowanych zgłoszeń, a w drugiej fazie będą odsłanial
 wysłane wcześniej zgłoszenia.
 W ostatniej, trzeciej fazie gracze będą mogli odebrać swoje zablokowane pieniądze.
 
-## Faza zgłoszeń
+### Faza zgłoszeń
 
 W pierwszej fazie razem z zahaszowanym zgłoszeniem gracze muszą wysłać
 fundusze pokrywające to zgłoszenie. Zauważmy jednak, że gdyby wysłali w jednej transakcji
@@ -60,7 +62,7 @@ które gracz może zastosować równocześnie:
     Z punktu widzenia kontraktu nie jesteśmy w stanie w tej fazie rozpoznać
     zgłoszeń, zatem spamiętujemy tylko ile funduszy niosą ze sobą kolejne hasze.
 
-## Faza odsłonień
+### Faza odsłonień
 
 W drugiej fazie gracze będą odsłaniali swoje zgłoszenia poprzez wysyłanie
 niezahaszowanych częściowych zgłoszeń z pierwszej fazy.
@@ -79,12 +81,12 @@ gdy pieniądze zablokowane na nim w całości go pokrywają.
 Ponadto, w celu równomiernego rozkładu opłat za gaz pomiędzy graczy. zwycięzca
 aukcji jest już wyznaczany na bieżąco w drugiej turze.
 
-## Faza zwrotów
+### Faza zwrotów
 
 W ostatniej fazie właściciel będzie mógł odzyskać zapłatę od zwycięzcy,
 natomiast gracze będą mogli odzyskać fundusze zablokowane na swoich pokrytych zgłoszeniach.
 
-# Struktura projektu
+## Struktura projektu
 
 Wszystkie smart kontrakty zawarte w projekcie znajdują się
 w folderze `contracts`. Główną częścią projektu jest kontrakt aukcji zaimplementowany
@@ -92,7 +94,7 @@ w pliku `Auction.sol`. Zaimplementowany został kontrakt `AuctionFactory`, któr
 pozwala tworzyć nowe aukcje i utrzymuje tablicę adresów stworzonych już aukcji.
 Cała implementacja aplikacji po stronie klienta znajduje się w folderze `src`.
 
-# Implementacja kontraktu Auction
+## Implementacja kontraktu Auction
 
 Poniższy rozdział zawiera najważniejsze informacje dotyczące implementacji
 kontraktu Auction.
@@ -141,7 +143,7 @@ Ponadto aukcja utrzymuje informacje potrzebne do wyznaczenia zwycięzcy tzn:
 
 Przejdźmy teraz do opisu najważniejszych informacji dotyczących kolejnych faz.
 
-## PIERWSZA FAZA
+### PIERWSZA FAZA
 
 W pierwszej fazie gracze mogą wysyłać hasze swoich częściowych zgłoszeń
 za pomocą funkcji `placeBid(bytes32)`. Wymagane jest, żeby wraz z haszem wysłać niezerową
@@ -149,7 +151,7 @@ liczbę pieniędzy. Ponadto nie można dwa razy zgłosić tego samego hasza.
 Zgłoszone hasze są za pomocą mapy z wartości `frozenWeis` hasza do funduszy,
 które zostały wraz z nim przesłane.
 
-## DRUGA FAZA
+### DRUGA FAZA
 
 W drugiej fazie gracze mogą odsłaniać swoje zgłoszenia
 wykorzystując funkcję `revealBids`. Przyjmuje tablicę
@@ -179,7 +181,7 @@ nie wykonujemy aktualizacji jeśli było ono już wcześniej pokryte.
 W samej aktualizacji wyniku aukcji remisy rozstrzygane są na korzyść zgłoszeń,
 które zostały wcześniej pokryte.
 
-## TRZECIA FAZA
+### TRZECIA FAZA
 
 W trzeciej fazie użytkownicy mają do dyspozycji dwie funkcje `withdrawBidder`
 i `withdrawDealer`.
