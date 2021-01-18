@@ -5,13 +5,15 @@
 
 Student project for blockchain fundamentals course.
 
-[Documentation (PL)](Dokumentacja.md)
+## Project overview
 
-## Planned functionalities
+-   This project is an implementation of Vickrey auction on Ethereum blockchain using Solidity.
+-   A user is able to create an auction by providing a starting price, two phase deadlines, and description of an item/service to be sold.
+-   For a given auction, users are be able to bid by locking their funds (possibly greater than the placed) in the contract without revealing their actual bid.
+-   After the first deadline users must reveal their bids for them to be considered. Users cannot create new bids now.
+-   After the second deadline, respective funds can be withdrawn by the interested parties. Winner (if any) withdraws the difference between their bid and the second price, while the auction creator withdraws the second price.
 
--   A user should be able to create an auction by providing a starting price, deadline, and description of an item/service to be sold.
--   For a given auction, users should be able to bid by locking their funds in the contract
--   After the deadline, funds of the winner should be automatically transferred to the auction creator, and the rest of the locked funds should be returned to users.
+Full description of the project can be found here: [Documentation (PL)](Dokumentacja.md).
 
 ## First time setup
 
@@ -21,12 +23,12 @@ Student project for blockchain fundamentals course.
 1. Run `Ganache` and perform first time setup.
 1. Connect `MetaMask` to your `Ganache` account of choice.
 1. Link this project to Ganache workspace (in Ganache: settings -> workspace -> ADD PROJECT -> select truffle-config.js)
-1. Run `npm run deploy` in repo directory.
+1. Run `npm run deploy` in cloned directory.
 
 ## Setup
 
 1. Ensure that `Ganache` is running.
-1. Run `npm run dev` in repo directory.
+1. Run `npm run dev` in cloned directory.
 1. Go to [localhost:3000](http://localhost:3000/).
 
 ## Authors
