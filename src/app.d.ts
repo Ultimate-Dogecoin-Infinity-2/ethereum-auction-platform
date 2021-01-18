@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 interface Window {
     web3: import("web3").default;
     App: any;

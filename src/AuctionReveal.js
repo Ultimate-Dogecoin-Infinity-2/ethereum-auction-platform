@@ -1,8 +1,5 @@
-import {
-    createAuctionContract,
-    createAuctionFactoryContract,
-    getJson,
-} from "./utils.js";
+// SPDX-License-Identifier: GPL-3.0-or-later
+import { createAuctionContract } from "./utils.js";
 
 const ELEMS = {
     AUCTION_ADDRESS: document.getElementById("auctionAddress"),

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 import { createAuctionFactoryContract, getJson } from "./utils.js";
 
 const ELEMS = {

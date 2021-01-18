@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 export function getJson(url) {
     return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest();

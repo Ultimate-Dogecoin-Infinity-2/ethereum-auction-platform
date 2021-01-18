@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 import AuctionCreation from "./AuctionCreation.js";
 import AuctionList from "./AuctionList.js";
 import AuctionCommit from "./AuctionCommit.js";
