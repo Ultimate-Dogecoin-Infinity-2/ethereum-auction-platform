@@ -25,9 +25,6 @@ contract AuctionFactory is CloneFactory {
         uint256 _startingPrice,
         address payable _owner
     ) public {
-        require(_phaseTwoStart > block.timestamp, "Phase two should be in future");
-        require(_phaseThreeStart > _phaseTwoStart, "Phase three should be after phase two");
-
         address auction = createClone(implementation);
         Auction(auction).initialize(
             _phaseTwoStart,

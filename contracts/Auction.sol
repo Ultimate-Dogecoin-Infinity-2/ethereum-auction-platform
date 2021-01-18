@@ -45,6 +45,9 @@ contract Auction {
         address payable _owner
     ) public {
         require(!initialized, "Auction is already initialized");
+        require(_phaseTwoStart > block.timestamp, "Phase two should be in future");
+        require(_phaseThreeStart > _phaseTwoStart, "Phase three should be after phase two");
+
         initialized = true;
         phaseTwoStart = _phaseTwoStart;
         phaseThreeStart = _phaseThreeStart;
