@@ -10,7 +10,7 @@
 ![Build Passing](https://img.shields.io/badge/build-passing-green)
 ![Rating](https://img.shields.io/badge/rating-%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%85-red)
 ![Build Passing](https://img.shields.io/badge/patreons-1-blueviolet)
-![Funding](https://img.shields.io/badge/Funding-0%-informational)
+![Funding](https://img.shields.io/badge/Funding-0%25-informational)
 
 
 Student project for blockchain fundamentals course.
