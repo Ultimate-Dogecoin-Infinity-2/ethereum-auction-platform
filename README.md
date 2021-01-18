@@ -4,6 +4,14 @@
 
 [![License GPL3](https://img.shields.io/badge/license-GPL3-green)](LICENSE)
 [![100% Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)](test/Auction.test.js)
+[![Dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-orange.svg)](test/Auction.test.js)
+![Contributions welcome](https://img.shields.io/badge/contributions-welcome-green.svg)
+![Dogeness](https://img.shields.io/badge/dogeness-infinity-yellow)
+![Build Passing](https://img.shields.io/badge/build-passing-green)
+![Rating](https://img.shields.io/badge/rating-%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%85-red)
+![Build Passing](https://img.shields.io/badge/patreons-1-blueviolet)
+![Funding](https://img.shields.io/badge/Funding-0%-informational)
+
 
 Student project for blockchain fundamentals course.
 
