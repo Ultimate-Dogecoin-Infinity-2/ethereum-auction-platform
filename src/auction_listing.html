@@ -1,40 +1,50 @@
 <!-- SPDX-License-Identifier: GPL-3.0-or-later -->
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>Ethereum: Auction platform</title>
-        <link rel="icon" href="favicon.png" />
-    </head>
-    <body>
-        <nav>
-            Go to:
-            <ul>
-                <li><a href="auction_creation.html">Create an auction</a></li>
-                <li>List auctions</li>
-                <li>
-                    <a href="auction_commiting.html">Place bid in auction</a>
-                </li>
-                <li>
-                    <a href="auction_revealing.html">Reveal bid in auction</a>
-                </li>
-                <li>
-                    <a href="auction_withdrawing.html">Withdraw from auction</a>
-                </li>
-            </ul>
-        </nav>
-        <main id="main" hidden>
-            <h1>Ethereum: Auction platform</h1>
-            <h2>Account: <span id="account"></span></h2>
-            <h3>List of auctions</h3>
 
-            <ol id="list"></ol>
-        </main>
-        <div id="loading">Loading...</div>
+<head>
+    <meta charset="utf-8" />
+    <title>Ethereum: Auction platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.png" />
+</head>
 
-        <!-- Scripts -->
-        <script src="vendor/@truffle/contract/dist/truffle-contract.js"></script>
-        <script src="vendor/web3/dist/web3.min.js"></script>
-        <script type="module" src="app.js"></script>
-    </body>
+<body>
+    <div id="background">
+    </div>
+    <div class="x" style="position: fixed">
+        <img class="y" src="favicon.png" alt="codepen" />
+    </div>
+
+    <nav>
+        Go to:
+        <ul>
+            <li><a href="auction_creation.html">Create an auction</a></li>
+            <li>List auctions</li>
+            <li>
+                <a href="auction_commiting.html">Place bid in auction</a>
+            </li>
+            <li>
+                <a href="auction_revealing.html">Reveal bid in auction</a>
+            </li>
+            <li>
+                <a href="auction_withdrawing.html">Withdraw from auction</a>
+            </li>
+        </ul>
+    </nav>
+    <main id="main" hidden>
+        <h1>Ethereum: Auction platform</h1>
+        <h2>Account: <span id="account"></span></h2>
+        <h3>List of auctions</h3>
+
+        <ol id="list"></ol>
+    </main>
+    <div id="loading">Loading...</div>
+
+    <!-- Scripts -->
+    <script src="vendor/@truffle/contract/dist/truffle-contract.js"></script>
+    <script src="vendor/web3/dist/web3.min.js"></script>
+    <script type="module" src="app.js"></script>
+</body>
+
 </html>

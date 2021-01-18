@@ -1,0 +1,45 @@
+#background {
+    background-image: url('favicon.png');
+    background-repeat: round;
+    opacity: 0.3;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    background-size: 100%;
+    width: 100%;
+    z-index: -1;
+}
+
+* {
+    font-family: "Comic Sans MS", "Sans";
+}
+
+body {
+    margin: 0;
+}
+
+.x {
+    animation: x 13s linear infinite alternate;
+}
+
+.x img {
+    width: 100px;
+    height: 100px;
+}
+
+.y {
+    animation: y 7s linear infinite alternate;
+}
+
+@keyframes x {
+    100% {
+        transform: translateX(calc(100vw - 100px));
+    }
+}
+
+@keyframes y {
+    100% {
+        transform: translateY(calc(100vh - 100px));
+    }
+}

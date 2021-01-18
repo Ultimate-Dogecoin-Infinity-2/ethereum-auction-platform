@@ -1,122 +1,108 @@
 <!-- SPDX-License-Identifier: GPL-3.0-or-later -->
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>Ethereum: Auction platform</title>
-        <link rel="icon" href="favicon.png" />
-    </head>
-    <body>
-        <nav>
-            Go to:
-            <ul>
-                <li><a href="auction_creation.html">Create an auction</a></li>
-                <li><a href="auction_listing.html">List auctions</a></li>
-                <li>
-                    <a href="auction_commiting.html">Place bid in auction</a>
-                </li>
-                <li>Reveal bid in auction</li>
-                <li>
-                    <a href="auction_withdrawing.html">Withdraw from auction</a>
-                </li>
-            </ul>
-        </nav>
 
-        <main id="main" hidden>
-            <h1>Ethereum: Auction platform</h1>
-            <h2>Account: <span id="account"></span></h2>
-            <form onSubmit="App.onSubmit(); return false;">
-                <h3>Reveal bids</h3>
+<head>
+    <meta charset="utf-8" />
+    <title>Ethereum: Auction platform</title>
+    <link rel="icon" href="favicon.png" />
+    <link rel="stylesheet" href="styles.css">
+</head>
 
-                <button onclick="App.passClick()">Add bid reveal</button>
-                <div style="margin-bottom: 15px">
-                    <label for="auctionAddress">Auction address: </label>
-                    <input
-                        required
-                        type="text"
-                        name="auctionAddress"
-                        id="auctionAddress"
-                    />
-                </div>
-                <div>
-                    <div id="template" style="margin-bottom: 15px">
-                        <div>
-                            <label for="id">Id: </label>
-                            <input required type="text" name="id" class="id" />
-                        </div>
+<body>
+    <div id="background">
+    </div>
+    <div class="x" style="position: fixed">
+        <img class="y" src="favicon.png" alt="codepen" />
+    </div>
 
-                        <div>
-                            <label for="bidderAddress">Bidder address: </label>
-                            <input
-                                required
-                                type="text"
-                                name="bidderAddress"
-                                class="bidderAddress"
-                            />
-                        </div>
+    <nav>
+        Go to:
+        <ul>
+            <li><a href="auction_creation.html">Create an auction</a></li>
+            <li><a href="auction_listing.html">List auctions</a></li>
+            <li>
+                <a href="auction_commiting.html">Place bid in auction</a>
+            </li>
+            <li>Reveal bid in auction</li>
+            <li>
+                <a href="auction_withdrawing.html">Withdraw from auction</a>
+            </li>
+        </ul>
+    </nav>
 
-                        <div>
-                            <label for="placedBid">Placed bid: </label>
-                            <input
-                                required
-                                type="number"
-                                name="placedBid"
-                                class="placedBid"
-                            />
-                            <select
-                                required
-                                name="placedBid"
-                                class="placedBidUnit"
-                            >
-                                <option value="wei">wei</option>
-                                <option value="kwei">kwei</option>
-                                <option value="Kwei">Kwei</option>
-                                <option value="babbage">babbage</option>
-                                <option value="femtoether">femtoether</option>
-                                <option value="mwei">mwei</option>
-                                <option value="Mwei">Mwei</option>
-                                <option value="lovelace">lovelace</option>
-                                <option value="picoether">picoether</option>
-                                <option value="gwei">gwei</option>
-                                <option value="Gwei">Gwei</option>
-                                <option value="shannon">shannon</option>
-                                <option value="nanoether">nanoether</option>
-                                <option value="nano">nano</option>
-                                <option value="szabo">szabo</option>
-                                <option value="microether">microether</option>
-                                <option value="micro">micro</option>
-                                <option value="finney">finney</option>
-                                <option value="milliether">milliether</option>
-                                <option value="milli">milli</option>
-                                <option value="ether">ether</option>
-                                <option value="kether">kether</option>
-                                <option value="grand">grand</option>
-                                <option value="mether">mether</option>
-                                <option value="gether">gether</option>
-                                <option value="tether">tether</option>
-                            </select>
-                        </div>
+    <main id="main" hidden>
+        <h1>Ethereum: Auction platform</h1>
+        <h2>Account: <span id="account"></span></h2>
+        <form onSubmit="App.onSubmit(); return false;">
+            <h3>Reveal bids</h3>
 
-                        <div>
-                            <label for="salt">Salt: </label>
-                            <input
-                                required
-                                type="text"
-                                name="salt"
-                                class="salt"
-                            />
-                        </div>
+            <button onclick="App.passClick()">Add bid reveal</button>
+            <div style="margin-bottom: 15px">
+                <label for="auctionAddress">Auction address: </label>
+                <input required type="text" name="auctionAddress" id="auctionAddress" />
+            </div>
+            <div>
+                <div id="template" style="margin-bottom: 15px">
+                    <div>
+                        <label for="id">Id: </label>
+                        <input required type="text" name="id" class="id" />
+                    </div>
+
+                    <div>
+                        <label for="bidderAddress">Bidder address: </label>
+                        <input required type="text" name="bidderAddress" class="bidderAddress" />
+                    </div>
+
+                    <div>
+                        <label for="placedBid">Placed bid: </label>
+                        <input required type="number" name="placedBid" class="placedBid" />
+                        <select required name="placedBid" class="placedBidUnit">
+                            <option value="wei">wei</option>
+                            <option value="kwei">kwei</option>
+                            <option value="Kwei">Kwei</option>
+                            <option value="babbage">babbage</option>
+                            <option value="femtoether">femtoether</option>
+                            <option value="mwei">mwei</option>
+                            <option value="Mwei">Mwei</option>
+                            <option value="lovelace">lovelace</option>
+                            <option value="picoether">picoether</option>
+                            <option value="gwei">gwei</option>
+                            <option value="Gwei">Gwei</option>
+                            <option value="shannon">shannon</option>
+                            <option value="nanoether">nanoether</option>
+                            <option value="nano">nano</option>
+                            <option value="szabo">szabo</option>
+                            <option value="microether">microether</option>
+                            <option value="micro">micro</option>
+                            <option value="finney">finney</option>
+                            <option value="milliether">milliether</option>
+                            <option value="milli">milli</option>
+                            <option value="ether">ether</option>
+                            <option value="kether">kether</option>
+                            <option value="grand">grand</option>
+                            <option value="mether">mether</option>
+                            <option value="gether">gether</option>
+                            <option value="tether">tether</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="salt">Salt: </label>
+                        <input required type="text" name="salt" class="salt" />
                     </div>
                 </div>
+            </div>
 
-                <input type="submit" value="Submit" />
-            </form>
-        </main>
-        <div id="loading">Loading...</div>
+            <input type="submit" value="Submit" />
+        </form>
+    </main>
+    <div id="loading">Loading...</div>
 
-        <!-- Scripts -->
-        <script src="vendor/@truffle/contract/dist/truffle-contract.js"></script>
-        <script src="vendor/web3/dist/web3.min.js"></script>
-        <script type="module" src="app.js"></script>
-    </body>
+    <!-- Scripts -->
+    <script src="vendor/@truffle/contract/dist/truffle-contract.js"></script>
+    <script src="vendor/web3/dist/web3.min.js"></script>
+    <script type="module" src="app.js"></script>
+</body>
+
 </html>
