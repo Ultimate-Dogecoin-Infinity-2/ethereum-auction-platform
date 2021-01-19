@@ -134,11 +134,11 @@ Do reprezentacji częściowych zgłoszeń służy z kolei struktura `BidReveal`.
 
 Ponadto, aukcja utrzymuje informacje potrzebne do wyznaczenia zwycięzcy, tzn.:
 
--   `firstBidder`: id zgłoszenia o największej kwocie
+-   `firstBidId`: id zgłoszenia o największej kwocie
 -   `firstPrice`: najwyższa zgłoszona kwota
 -   `secondPrice`: druga najwyższa zgłoszona kwota.
 
-Zmienne `firstBidder` oraz `secondPrice` są publiczne.
+Zmienne `firstBidId` oraz `secondPrice` są publiczne.
 W trzeciej fazie zawierają one id zwycięskiego zgłoszenia oraz cenę
 jaką zapłacił zwycięzca za wygranie aukcji.
 
@@ -173,7 +173,7 @@ Jeśli częściowe zgłoszenie okaże się poprawne,
 przenosimy fundusze spamiętane pod tym haszem do zgłoszenia.
 Zauważmy, że w ten sposób zerujemy fundusze przypisane do tego hasza, przez co zablokujemy możliwość jego podwójnego odblokowania.
 
-Ostatnia część funkcji `revealBids` sprawdza, czy ostatnie częściowe zgłoszenie przez nas wysłane pokryło funduszami nasze zgłoszenie (wcześniej je nie pokrywało w pełni) - jeśli tak, to aktualizujemy wynik aukcji za pomocą funkcji `setNewTopBets`.
+Ostatnia część funkcji `revealBids` sprawdza, czy ostatnie częściowe zgłoszenie przez nas wysłane pokryło funduszami nasze zgłoszenie (wcześniej je nie pokrywało w pełni) - jeśli tak, to aktualizujemy wynik aukcji za pomocą funkcji `updateTopBids`.
 Zauważmy, że aby uniknąć wielokrotnego uwzględnienia jednego zgłoszenia,
 nie wykonujemy aktualizacji jeśli było ono już wcześniej pokryte.
 W samej aktualizacji wyniku aukcji remisy rozstrzygane są na korzyść zgłoszeń,

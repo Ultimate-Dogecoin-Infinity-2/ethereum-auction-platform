@@ -71,9 +71,9 @@ const AuctionList = {
             description: await contract.description(),
             startingPrice: await contract.startingPrice(),
             secondPrice: await contract.secondPrice(),
-            firstBidder: await contract.revealedBids(
-                await contract.firstBidder()
-            ).returnAddress,
+            firstBidder: (await contract.revealedBids(
+                await contract.firstBidId()
+            )).returnAddress,
         };
     },
 };

@@ -13,7 +13,7 @@ contract Auction {
     uint256 public phaseTwoStart;
     uint256 public phaseThreeStart;
 
-    bytes32 public firstBidder;
+    bytes32 public firstBidId;
     uint256 firstPrice;
     uint256 public secondPrice;
 
@@ -29,13 +29,13 @@ contract Auction {
     }
 
     struct BidReveal {
-        bytes32 bidderSecretId;
+        bytes32 bidSecretId;
         address payable returnAddress;
         uint256 biddedPrice;
         uint256 salt;
     }
 
-    // Mapping from bidderSecretId to Bid
+    // Mapping from bidSecretId to Bid
     mapping(bytes32 => Bid) public revealedBids;
 
     function initialize(
@@ -103,15 +103,15 @@ contract Auction {
             bid.revealedWeis - weisRelatedToHash < bid.biddedPrice;
     }
 
-    function setNewTopBets(bytes32 bidderId) internal {
-        Bid memory bid = revealedBids[bidderId];
+    function updateTopBids(bytes32 bidId) internal {
+        Bid memory bid = revealedBids[bidId];
         if (
             bid.biddedPrice > firstPrice ||
-            (bid.biddedPrice == firstPrice && firstBidder == 0)
+            (bid.biddedPrice == firstPrice && firstBidId == 0)
         ) {
             secondPrice = firstPrice;
             firstPrice = bid.biddedPrice;
-            firstBidder = bidderId;
+            firstBidId = bidId;
         } else if (bid.biddedPrice > secondPrice) {
             secondPrice = bid.biddedPrice;
         }
@@ -121,13 +121,13 @@ contract Auction {
         for (uint256 i = 0; i < bidReveal.length; i++) {
             BidReveal memory bid = bidReveal[i];
 
-            require(bid.bidderSecretId != 0, "Secret id cannot be 0");
+            require(bid.bidSecretId != 0, "Secret id cannot be 0");
             require(bid.biddedPrice > 0, "Bidded price must be greater than 0");
 
             bytes32 bidHash =
                 keccak256(
                     abi.encode(
-                        bid.bidderSecretId,
+                        bid.bidSecretId,
                         bid.returnAddress,
                         bid.biddedPrice,
                         bid.salt
@@ -140,33 +140,33 @@ contract Auction {
                 "You cannot reveal the same hash twice or send unexisting reveal"
             );
 
-            if (revealedBids[bid.bidderSecretId].biddedPrice == 0) {
-                revealedBids[bid.bidderSecretId].biddedPrice = bid.biddedPrice;
-                revealedBids[bid.bidderSecretId].returnAddress = bid
+            if (revealedBids[bid.bidSecretId].biddedPrice == 0) {
+                revealedBids[bid.bidSecretId].biddedPrice = bid.biddedPrice;
+                revealedBids[bid.bidSecretId].returnAddress = bid
                     .returnAddress;
             } else {
                 require(
-                    revealedBids[bid.bidderSecretId].biddedPrice ==
+                    revealedBids[bid.bidSecretId].biddedPrice ==
                         bid.biddedPrice,
                     "Bidded price cannot be changed"
                 );
                 require(
-                    revealedBids[bid.bidderSecretId].returnAddress ==
+                    revealedBids[bid.bidSecretId].returnAddress ==
                         bid.returnAddress,
                     "Return address cannot be changed"
                 );
             }
 
             frozenWeis[bidHash] = 0;
-            revealedBids[bid.bidderSecretId].revealedWeis += weisRelatedToHash;
+            revealedBids[bid.bidSecretId].revealedWeis += weisRelatedToHash;
 
             if (
                 isLastBetToBiddedPrice(
-                    revealedBids[bid.bidderSecretId],
+                    revealedBids[bid.bidSecretId],
                     weisRelatedToHash
                 )
             ) {
-                setNewTopBets(bid.bidderSecretId);
+                updateTopBids(bid.bidSecretId);
             }
         }
     }
@@ -182,7 +182,7 @@ contract Auction {
             uint256 weis = revealedBids[withdrawalId].revealedWeis;
             if (price > 0 && weis >= price) {
                 uint256 withdrawalWeis = weis;
-                if (withdrawalId == firstBidder) {
+                if (withdrawalId == firstBidId) {
                     withdrawalWeis -= secondPrice;
                 }
 
@@ -197,7 +197,7 @@ contract Auction {
     function withdrawDealer() public onlyInPhaseThree {
         require(!ownerHasWithdrawn, "Owner cannot withdraw money twice");
         require(
-            firstBidder != 0,
+            firstBidId != 0,
             "You cannot withdraw money if no one won the auction"
         );
         ownerHasWithdrawn = true;
