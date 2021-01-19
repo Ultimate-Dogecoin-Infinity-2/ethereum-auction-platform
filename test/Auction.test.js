@@ -15,39 +15,39 @@ const returnAddress = "0xDC25EF3F5B8A186998338A2ADA83795FBA2D695E";
 const bids = {
 
     zero: {
-        bidderSecretId: 0,
+        bidSecretId: 0,
         biddedPrice: 6
     },
 
     wojtek: [{
-        bidderSecretId: "wojtek",
+        bidSecretId: "wojtek",
         biddedPrice: 3,
     }, {
-        bidderSecretId: "wojtek",
+        bidSecretId: "wojtek",
         biddedPrice: 4,
     }, {
-        bidderSecretId: "wojtek",
+        bidSecretId: "wojtek",
         biddedPrice: 8,
     }],
 
     maucin: [{
-        bidderSecretId: "maucin",
+        bidSecretId: "maucin",
         biddedPrice: 2,
     }, {
-        bidderSecretId: "maucin",
+        bidSecretId: "maucin",
         biddedPrice: 4,
     }, {
-        bidderSecretId: "maucin",
+        bidSecretId: "maucin",
         biddedPrice: 0,
     }],
 
     krzys: [{
-        bidderSecretId: "krzys",
+        bidSecretId: "krzys",
         biddedPrice: 20,
     }],
 
     agnieszka: [{
-        bidderSecretId: "agnieszka",
+        bidSecretId: "agnieszka",
         biddedPrice: 1,
     }]
 }
@@ -61,7 +61,7 @@ const computeHash = (params, _salt = salt, _returnAddres = returnAddress) => {
         web3.eth.abi.encodeParameters(
             ["bytes32", "address", "uint256", "uint256"],
             [
-                toBytes32(params.bidderSecretId),
+                toBytes32(params.bidSecretId),
                 _returnAddres,
                 params.biddedPrice,
                 web3.utils.soliditySha3(_salt),
@@ -72,7 +72,7 @@ const computeHash = (params, _salt = salt, _returnAddres = returnAddress) => {
 
 const revealBids = async (bid, _salt = salt, _returnAddres = returnAddress) => {
     params = {
-        bidderSecretId: toBytes32(bid.bidderSecretId),
+        bidSecretId: toBytes32(bid.bidSecretId),
         returnAddress: _returnAddres,
         biddedPrice: bid.biddedPrice,
         salt: web3.utils.soliditySha3(_salt)
@@ -362,7 +362,7 @@ contract("Standard auction", (accounts) => {
     });
 
     it("Krzys should win the auction", async () => {
-        assert.equal(await this.auction.firstBidder(), toBytes32("krzys"));
+        assert.equal(await this.auction.firstBidId(), toBytes32("krzys"));
     })
 
 

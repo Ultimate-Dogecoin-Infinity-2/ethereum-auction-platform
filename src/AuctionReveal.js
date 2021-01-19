@@ -54,7 +54,7 @@ const AuctionReveal = {
         try {
             await AuctionReveal.contract.revealBids(
                 params.bids.map((bid) => ({
-                    bidderSecretId: web3.utils.soliditySha3(bid.id),
+                    bidSecretId: web3.utils.soliditySha3(bid.id),
                     returnAddress: bid.bidderAddress,
                     biddedPrice: web3.utils.toWei(
                         bid.placedBid.value,

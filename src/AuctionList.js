@@ -46,7 +46,7 @@ const AuctionList = {
             <div> Starting price: ${auctionInfo.startingPrice} wei </div>
             ${
                 new Date() > auctionInfo.phaseThreeStart
-                    ? `<div> Winner: ${auctionInfo.firstBidder} </div>
+                    ? `<div> Winner: ${auctionInfo.firstBidId} </div>
                        <div> Final price: ${auctionInfo.secondPrice} </div>`
                     : ""
             }
@@ -61,7 +61,7 @@ const AuctionList = {
             AuctionList.web3provider,
             address
         );
-        return {
+        var asd = {
             phaseTwoStart: new Date(
                 (await contract.phaseTwoStart()).toNumber() * 1000
             ),
@@ -71,10 +71,13 @@ const AuctionList = {
             description: await contract.description(),
             startingPrice: await contract.startingPrice(),
             secondPrice: await contract.secondPrice(),
-            firstBidder: await contract.revealedBids(
-                await contract.firstBidder()
+            firstBidId: await contract.revealedBids(
+                await contract.firstBidId()
             ).returnAddress,
+            kupa: await contract.firstBidId()
         };
+        console.log(asd);
+        return asd;
     },
 };
 
