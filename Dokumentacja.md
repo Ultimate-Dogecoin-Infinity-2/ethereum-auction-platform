@@ -70,13 +70,16 @@ na konkretnym zgłoszeniu.
 Dane zgłoszenie będzie brane pod uwagę w aukcji dopiero w momencie
 kiedy fundusze na nim zablokowane osiągną zgłaszaną cenę.
 
-Zauważmy też, że gracze mogą oni nie odkryć swoich częściowych zgłoszeń,
+Zauważmy też, że gracze mogą nie odkryć swoich częściowych zgłoszeń,
 dzięki czemu mają możliwość manipulacji swoimi zgłoszeniami.
 Aby zapewnić nieopłacalność takiego postępowania wprowadzamy dodatkowe
 ograniczenie, że zwrot pieniędzy za dane zgłoszenie można uzyskać tylko wtedy,
 gdy pieniądze zablokowane na nim w całości go pokrywają.
+W przeciwnym wypadku, właściciel aukcji mógłby wysłać dużo zgłoszeń
+i odkryć tylko to, którego kwota jest minimalne mniejsza od kwoty gracza, który
+postawił najwięcej, przez co mógłby on zarobić na tej aukcji więcej pieniędzy.
 
-Ponadto, w celu równomiernego rozkładu opłat za gaz pomiędzy graczy. zwycięzca
+Ponadto, w celu równomiernego rozkładu opłat za gaz pomiędzy graczy, zwycięzca
 aukcji jest już wyznaczany na bieżąco w drugiej turze.
 
 ### Faza zwrotów
@@ -120,23 +123,24 @@ zostają przekazane do funkcji inicjalizującej przy tworzeniu aukcji:
 -   `owner`: adres na który ma zostać przelana zapłata zwycięzcy aukcji
 
 Wszystkie odsłonięte zgłoszenia w aukcji są spamiętywane
-w mapie `revealedBids` z id zgłoszenia do szczegółów tego zgłoszenia.
+w mapie `revealedBids`, która przekształca id zgłoszenia do szczegółów tego zgłoszenia.
 Do reprezentowania szczegółów zgłoszenia wykorzystywana jest struktura
 Bid składająca się z pól `revealedWeis`, `biddedPrice` oraz `returnAddress`, gdzie
 `revealedWeis` to zebrane na tym zgłoszeniu fundusze.
-Tak jak wcześniej wspomniano zgłoszenie to jest brane pod uwagę w aukcji
+Tak jak wcześniej wspomniano, zgłoszenie to jest brane pod uwagę w aukcji
 tylko wtedy gdy `revealedWeis >= biddedPrice`.
 
-Do reprezentacji częściowych zgłoszeń służy z kolei struktur `BidReveal`.
+Do reprezentacji częściowych zgłoszeń służy z kolei struktura `BidReveal`.
 
-Ponadto aukcja utrzymuje informacje potrzebne do wyznaczenia zwycięzcy tzn:
+Ponadto, aukcja utrzymuje informacje potrzebne do wyznaczenia zwycięzcy, tzn.:
 
 -   `firstBidder`: id zgłoszenia o największej kwocie
 -   `firstPrice`: najwyższa zgłoszona kwota
--   `secondPrice`: druga najwyższa zgłoszona kwota
-    Zmienne `firstBidder` oraz `secondPrice` są publiczne.
-    W trzeciej fazie zawierają one id zwycięskiego zgłoszenia oraz cenę
-    jaką zapłacił zwycięzca za wygranie aukcji.
+-   `secondPrice`: druga najwyższa zgłoszona kwota.
+
+Zmienne `firstBidder` oraz `secondPrice` są publiczne.
+W trzeciej fazie zawierają one id zwycięskiego zgłoszenia oraz cenę
+jaką zapłacił zwycięzca za wygranie aukcji.
 
 Przejdźmy teraz do opisu najważniejszych informacji dotyczących kolejnych faz.
 
@@ -144,35 +148,32 @@ Przejdźmy teraz do opisu najważniejszych informacji dotyczących kolejnych faz
 
 W pierwszej fazie gracze mogą wysyłać hasze swoich częściowych zgłoszeń
 za pomocą funkcji `placeBid(bytes32)`. Wymagane jest, żeby wraz z haszem wysłać niezerową
-liczbę pieniędzy. Ponadto nie można dwa razy zgłosić tego samego hasza.
-Zgłoszone hasze są za pomocą mapy z wartości `frozenWeis` hasza do funduszy,
-które zostały wraz z nim przesłane.
+liczbę pieniędzy. Ponadto, nie można dwa razy zgłosić tego samego hasza.
+Zgłoszone hasze są zapamiętywane za pomocą mapy `frozenWeis`, która przekształca hasz do funduszy, które zostały z tym haszem przesłane.
 
 ### DRUGA FAZA
 
 W drugiej fazie gracze mogą odsłaniać swoje zgłoszenia
-wykorzystując funkcję `revealBids`. Przyjmuje tablicę
-zmiennych typu `BidReveal` dzięki czemu gracze mogą odsłonić wszystkie swoje
+wykorzystując funkcję `revealBids`. Przyjmuje ona tablicę
+zmiennych typu `BidReveal`, dzięki czemu gracze mogą odsłonić wszystkie swoje
 zgłoszenia wywołując ją tylko raz.
 
-Funkcja ta zaczyna od sprawdzenia poprawności częściowego zgłoszenia
+Funkcja ta zaczyna od sprawdzenia poprawności częściowego zgłoszenia,
 wykonując poniższe operacje:
 
--   sprawdzamy czy hasz tego częściowego zgłoszenia został wysłany w pierwszej fazie
+-   sprawdzamy, czy hasz tego częściowego zgłoszenia został wysłany w pierwszej fazie
     i nie został do tej pory odsłonięty
 -   w przypadku gdy zostało już wcześniej odsłonięte inne częściowe zgłoszenie
-    mające to samo id zgłoszenia sprawdzamy, czy jest to, to samo zgłoszenie
-    (wymuszamy równość adresów zwrotu oraz zgłoszonej ceny)
-    Z powodu drugiego przypadku zalecane jest, aby przy tworzeniu zgłoszeń
-    generować losowe id.
+    mające to samo id zgłoszenia sprawdzamy, czy jest to to samo zgłoszenie
+    (wymuszamy równość adresów zwrotu oraz zgłoszonej ceny).
 
-W sytuacji kiedy częściowe zgłoszenie okaże się poprawne
+Zauważmy, że druga przedstawiona operacja wymusza, aby id było losowe - w przeciwnym wypadku, jeżeli znane by było przez osobę trzecią, to mogłaby ona w pierwszej fazie zgłosić hasz z naszym id z arbitralną zgłoszoną ceną, a w drugiej fazie odsłonić ten hasz przed nami, blokując nam możliwość odsłaniania naszych częściowych zgłoszeń, blokując nam w ten sposób wysłane przez nas wcześniej pieniądze.  
+
+Jeśli częściowe zgłoszenie okaże się poprawne,
 przenosimy fundusze spamiętane pod tym haszem do zgłoszenia.
-Zauważmy, że w ten sposób zapominamy o zgłoszonym haszu, przez co zablokujemy możliwość
-jego podwójnego odblokowania.
+Zauważmy, że w ten sposób zerujemy fundusze przypisane do tego hasza, przez co zablokujemy możliwość jego podwójnego odblokowania.
 
-Ostatnia część funkcji `revealBids` sprawdza czy właśnie pokryliśmy funduszami
-nasze zgłoszenie i jeśli tak, to aktualizujemy wynik aukcji.
+Ostatnia część funkcji `revealBids` sprawdza, czy ostatnie częściowe zgłoszenie przez nas wysłane pokryło funduszami nasze zgłoszenie (wcześniej je niepokrywało w pełni) - jeśli tak, to aktualizujemy wynik aukcji za pomocą funkcji `setNewTopBets`.
 Zauważmy, że aby uniknąć wielokrotnego uwzględnienia jednego zgłoszenia,
 nie wykonujemy aktualizacji jeśli było ono już wcześniej pokryte.
 W samej aktualizacji wyniku aukcji remisy rozstrzygane są na korzyść zgłoszeń,
@@ -180,12 +181,12 @@ które zostały wcześniej pokryte.
 
 ### TRZECIA FAZA
 
-W trzeciej fazie użytkownicy mają do dyspozycji dwie funkcje `withdrawBidder`
+W trzeciej fazie użytkownicy mają do dyspozycji dwie funkcje: `withdrawBidder`
 i `withdrawDealer`.
-Pierwsza z nich pozwala użytkowników wycofać pieniądze zebrane na
+Pierwsza z nich pozwala użytkownikom wycofać pieniądze zebrane na
 danym zgłoszeniu poprzez podanie id tego zgłoszenia.
-W przypadku zwycięzcy aukcji zwrócona kwota, będzie pomniejszona o cenę
-jaką będzie on płacić za wygranie aukcji.
+W przypadku zwycięzcy aukcji zwrócona kwota będzie pomniejszona o cenę
+jaką będzie on płacił za wygranie aukcji.
 Z kolei funkcja `withdrawDealer` pozwala na wysłanie do
 właściciela aukcji zapłaty od zwycięzcy.
 
@@ -193,7 +194,7 @@ właściciela aukcji zapłaty od zwycięzcy.
 
 Pierwotna wersja kontraktu AuctionFactory zawierała klasyczną implementację wzorca projektowego fabryki. Koszty tworzenia nowej aukcji okazały się jednak bardzo duże. Powodem tego jest fakt, że za każdym razem kiedy umieszczamy nową aukcję na chainie poza samym stworzeniem stanu nowego kontraktu powielamy również całą logikę tego kontraktu.
 
-W celu zaoszczędzenia gazu wykorzystaliśmy standard [EIP-1167: Minimal Proxy Contract](https://eips.ethereum.org/EIPS/eip-1167). W skrócie pozwala on na tworzenie 'klonów' kontraktu aukcji, które posiadają swój własny stan, natomiast ich logika odpowiada jedynie za delegowanie wywołań funkcji do oryginalnego kontraktu aukcji umieszczonego na chainie.
+W celu zaoszczędzenia gazu wykorzystaliśmy standard [EIP-1167: Minimal Proxy Contract](https://eips.ethereum.org/EIPS/eip-1167). Ogólnie mówiąc, pozwala on na tworzenie 'klonów' kontraktu aukcji, które posiadają swój własny stan, natomiast ich logika odpowiada jedynie za delegowanie wywołań funkcji do oryginalnego kontraktu aukcji umieszczonego na chainie.
 
 Nowa wersja kontraktu AuctionFactory dziedziczy teraz po kontrakcie CloneFactory, który jest
 [oryginalną implementacją](https://github.com/optionality/clone-factory/blob/master/contracts/CloneFactory.sol) standardu EIP-1167. W celu dostosowania naszego kodu do nowej metody tworzenia aukcji
