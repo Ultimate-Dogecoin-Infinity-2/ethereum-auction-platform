@@ -12,7 +12,6 @@
 ![Patreons](https://img.shields.io/badge/patreons-1-blueviolet)
 ![Funding](https://img.shields.io/badge/funding-0%24-informational)
 
-
 Student project for blockchain fundamentals course.
 
 ## Project overview
@@ -47,12 +46,8 @@ Full description of the project can be found here: [Documentation (PL)](Dokument
 -   [Krzysztof Pióro](https://github.com/krzysztofpioro)
 -   [Marcin Serwin](https://github.com/marcin-serwin)
 
-[![Fractal Doge](https://media4.giphy.com/media/54Vj1kxvgyF4k/giphy.gif)](http://gph.is/1fDc0lE)
-
 ## Licenses and acknowledgments
 
 Project code is distributed under the [GPL3 License](https://www.gnu.org/licenses/gpl-3.0.html). See [LICENSE](LICENSE) for more information.
 
-Ultimate Dogecoin Infinity 2 logo is distributed under [CC BY-SA 2.5](https://creativecommons.org/licenses/by-sa/2.5/)
-
-Fractal doge gif is distributed directly via [Giphy](http://gph.is/1fDc0lE) service.
+Ultimate Dogecoin Infinity 2 logo and all other images are distributed under [CC BY-SA 2.5](https://creativecommons.org/licenses/by-sa/2.5/)
