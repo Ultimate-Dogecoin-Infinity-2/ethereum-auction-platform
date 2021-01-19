@@ -18,8 +18,6 @@ Specyfikacja:
 -   po zakończeniu aukcji jej właściciel może odebrać zapłatę od zwycięzcy, natomiast gracze
     mogą odzyskać swoje zablokowane na kontrakcie pieniądze
 
--footnote: opis faz zostanie przedstawiony w dalszej części raportu
-
 ## Aukcja drugiej ceny na blockchainie
 
 W aukcji drugiej ceny uczestnicy aukcji jednocześnie zgłaszają swoje
@@ -113,7 +111,7 @@ bardzo krótkich czasach trwania faz. Ponadto dla graczy zalecane jest,
 aby nie wysyłali transakcji w okolicach granic kolejnych faz.
 
 Możemy teraz przejść do opisu zmiennych, które
-zostają przekazane do konstruktora przy tworzeniu aukcji:
+zostają przekazane do funkcji inicjalizującej przy tworzeniu aukcji:
 
 -   `phaseTwoStart`: czas rozpoczęcia drugiej fazy podany jako Unix timestamp.
 -   `phaseThreeStart`: czas rozpoczęcia trzeciej fazy podany jako Unix timestamp
@@ -128,7 +126,6 @@ Bid składająca się z pól `revealedWeis`, `biddedPrice` oraz `returnAddress`,
 `revealedWeis` to zebrane na tym zgłoszeniu fundusze.
 Tak jak wcześniej wspomniano zgłoszenie to jest brane pod uwagę w aukcji
 tylko wtedy gdy `revealedWeis >= biddedPrice`.
---ewentualnie od pauz
 
 Do reprezentacji częściowych zgłoszeń służy z kolei struktur `BidReveal`.
 
@@ -191,3 +188,12 @@ W przypadku zwycięzcy aukcji zwrócona kwota, będzie pomniejszona o cenę
 jaką będzie on płacić za wygranie aukcji.
 Z kolei funkcja `withdrawDealer` pozwala na wysłanie do
 właściciela aukcji zapłaty od zwycięzcy.
+
+# Minimal Proxy Contract
+Pierwotna wersja kontraktu AuctionFactory zawierała klasyczną implementację wzorca projektowego fabryki. Koszty tworzenia nowej aukcji okazały się jednak bardzo duże. Powodem tego jest fakt, że za każdym razem kiedy umieszczamy nową aukcję na chainie poza samym stworzeniem stanu nowego kontraktu powielamy również całą logikę tego kontraktu.
+
+W celu zaoszczędzenia gazu wykorzystaliśmy standard [EIP-1167: Minimal Proxy Contract](https://eips.ethereum.org/EIPS/eip-1167). W skrócie pozwala on na tworzenie 'klonów' kontraktu aukcji, które posiadają swój własny stan, natomiast ich logika odpowiada jedynie za delegowanie wywołań funkcji do oryginalnego kontraktu aukcji umieszczonego na chainie. 
+
+Nowa wersja kontraktu AuctionFactory dziedziczy teraz po kontrakcie CloneFactory, który jest 
+[oryginalną implementacją](https://github.com/optionality/clone-factory/blob/master/contracts/CloneFactory.sol) standardu EIP-1167. W celu dostosowania naszego kodu do nowej metody tworzenia aukcji
+zastąpiliśmy konstruktor kontraktu aukcji przez funkcję inicjalizującą.
