@@ -230,3 +230,23 @@ Po zakończeniu fazy drugiej pozostaje nam już tylko odebrać środki. Jeśli w
 ![Wypłata](images/5-withdraw.png)
 
 W przypadku wypłacania środków jako właściciel aukcji nie musimy podawać id zgłoszenia a jedynie sam adres aukcji.
+
+
+## Testy
+
+Wszystkie napisane kontrakty w ramach tego projektu są odpowiednio przetestowane przez plik *Auction.test.js* znajdujący się w folderze **test**. Testy te można uruchomić poleceniem `npm run test` (aby uzyskać coverage kontraktów należy użyć polecenia `npm run test-coverage`).
+
+Testy te są testami typu **end-to-end**, tzn. testujemy wysokopoziomową funkcjonalość zapewnioną przez kontrakty, czyli tworzenie nowych aukcji oraz dowolną interakcję z nimi.
+
+W testach często stosowana jest funkcja `advanceBlockAtTime`, której używamy do 'przesuwania' aktualnego czasu na Blockchainie, co pozwala nam przemieszczanie się pomiędzy poszczególne fazy aukcji. Po testach, czas w Ganache powinien powrócić do aktualnego, jednak czasy wykopanych bloków w historii mogą być nierosnące.
+
+Dla każdego *if*-a oraz *require*-a, testy sprawdzają wszystkie możliwe gałęzi wykonania, co potwierdza **100%** "branch coverage'u" na naszych kontraktach:
+
+
+
+| File                |  % Stmts | % Branch |  % Funcs |  % Lines |Uncovered Lines |
+|---------------------|----------|----------|----------|----------|----------------|
+| Auction.sol         |      100 |      100 |      100 |      100 |                |
+| AuctionFactory.sol  |      100 |      100 |      100 |      100 |                |
+| CloneFactory.sol    |      100 |      100 |      100 |      100 |                |
+| **All files**       |  **100** |  **100** |  **100** |  **100** |                |
