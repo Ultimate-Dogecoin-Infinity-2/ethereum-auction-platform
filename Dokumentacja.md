@@ -173,7 +173,7 @@ Jeśli częściowe zgłoszenie okaże się poprawne,
 przenosimy fundusze spamiętane pod tym haszem do zgłoszenia.
 Zauważmy, że w ten sposób zerujemy fundusze przypisane do tego hasza, przez co zablokujemy możliwość jego podwójnego odblokowania.
 
-Ostatnia część funkcji `revealBids` sprawdza, czy ostatnie częściowe zgłoszenie przez nas wysłane pokryło funduszami nasze zgłoszenie (wcześniej je niepokrywało w pełni) - jeśli tak, to aktualizujemy wynik aukcji za pomocą funkcji `setNewTopBets`.
+Ostatnia część funkcji `revealBids` sprawdza, czy ostatnie częściowe zgłoszenie przez nas wysłane pokryło funduszami nasze zgłoszenie (wcześniej je nie pokrywało w pełni) - jeśli tak, to aktualizujemy wynik aukcji za pomocą funkcji `setNewTopBets`.
 Zauważmy, że aby uniknąć wielokrotnego uwzględnienia jednego zgłoszenia,
 nie wykonujemy aktualizacji jeśli było ono już wcześniej pokryte.
 W samej aktualizacji wyniku aukcji remisy rozstrzygane są na korzyść zgłoszeń,
@@ -236,7 +236,7 @@ W przypadku wypłacania środków jako właściciel aukcji nie musimy podawać i
 
 Wszystkie napisane kontrakty w ramach tego projektu są odpowiednio przetestowane przez plik _Auction.test.js_ znajdujący się w folderze **test**. Testy te można uruchomić poleceniem `npm run test` (aby uzyskać coverage kontraktów należy użyć polecenia `npm run test-coverage`).
 
-Testy te są testami typu **end-to-end**, tzn. testujemy wysokopoziomową funkcjonalość zapewnioną przez kontrakty, czyli tworzenie nowych aukcji oraz dowolną interakcję z nimi.
+Testy te są testami typu **end-to-end**, tzn. testujemy wysokopoziomową funkcjonalność zapewnioną przez kontrakty, czyli tworzenie nowych aukcji oraz dowolną interakcję z nimi.
 
 W testach często stosowana jest funkcja `advanceBlockAtTime`, której używamy do 'przesuwania' aktualnego czasu na Blockchainie, co pozwala nam przemieszczanie się pomiędzy poszczególne fazy aukcji. Po testach, czas w Ganache powinien powrócić do aktualnego, jednak czasy wykopanych bloków w historii mogą być nierosnące.
 
