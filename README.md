@@ -9,7 +9,7 @@
 ![Dogeness](https://img.shields.io/badge/dogeness-%E2%88%9E-yellow)
 ![Build Passing](https://img.shields.io/badge/build-passing-green)
 ![Rating](https://img.shields.io/badge/rating-%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%85-red)
-![Patreons](https://img.shields.io/badge/patreons-1-blueviolet)
+![Patreons](https://img.shields.io/badge/patreons-2-blueviolet)
 ![Funding](https://img.shields.io/badge/funding-0%24-informational)
 
 Student project for blockchain fundamentals course.
