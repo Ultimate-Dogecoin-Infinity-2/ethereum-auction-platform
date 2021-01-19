@@ -144,14 +144,14 @@ jaką zapłacił zwycięzca za wygranie aukcji.
 
 Przejdźmy teraz do opisu najważniejszych informacji dotyczących kolejnych faz.
 
-### PIERWSZA FAZA
+### Pierwsza Faza
 
 W pierwszej fazie gracze mogą wysyłać hasze swoich częściowych zgłoszeń
 za pomocą funkcji `placeBid(bytes32)`. Wymagane jest, żeby wraz z haszem wysłać niezerową
 liczbę pieniędzy. Ponadto, nie można dwa razy zgłosić tego samego hasza.
 Zgłoszone hasze są zapamiętywane za pomocą mapy `frozenWeis`, która przekształca hasz do funduszy, które zostały z tym haszem przesłane.
 
-### DRUGA FAZA
+### Druga Faza
 
 W drugiej fazie gracze mogą odsłaniać swoje zgłoszenia
 wykorzystując funkcję `revealBids`. Przyjmuje ona tablicę
@@ -167,7 +167,7 @@ wykonując poniższe operacje:
     mające to samo id zgłoszenia sprawdzamy, czy jest to to samo zgłoszenie
     (wymuszamy równość adresów zwrotu oraz zgłoszonej ceny).
 
-Zauważmy, że druga przedstawiona operacja wymusza, aby id było losowe - w przeciwnym wypadku, jeżeli znane by było przez osobę trzecią, to mogłaby ona w pierwszej fazie zgłosić hasz z naszym id z arbitralną zgłoszoną ceną, a w drugiej fazie odsłonić ten hasz przed nami, blokując nam możliwość odsłaniania naszych częściowych zgłoszeń, blokując nam w ten sposób wysłane przez nas wcześniej pieniądze.  
+Zauważmy, że druga przedstawiona operacja wymusza, aby id było losowe - w przeciwnym wypadku, jeżeli znane by było przez osobę trzecią, to mogłaby ona w pierwszej fazie zgłosić hasz z naszym id z arbitralną zgłoszoną ceną, a w drugiej fazie odsłonić ten hasz przed nami, blokując nam możliwość odsłaniania naszych częściowych zgłoszeń, blokując nam w ten sposób wysłane przez nas wcześniej pieniądze.
 
 Jeśli częściowe zgłoszenie okaże się poprawne,
 przenosimy fundusze spamiętane pod tym haszem do zgłoszenia.
@@ -179,7 +179,7 @@ nie wykonujemy aktualizacji jeśli było ono już wcześniej pokryte.
 W samej aktualizacji wyniku aukcji remisy rozstrzygane są na korzyść zgłoszeń,
 które zostały wcześniej pokryte.
 
-### TRZECIA FAZA
+### Trzecia Faza
 
 W trzeciej fazie użytkownicy mają do dyspozycji dwie funkcje: `withdrawBidder`
 i `withdrawDealer`.
@@ -232,22 +232,19 @@ Po zakończeniu fazy drugiej pozostaje nam już tylko odebrać środki. Jeśli w
 
 W przypadku wypłacania środków jako właściciel aukcji nie musimy podawać id zgłoszenia a jedynie sam adres aukcji.
 
-
 ## Testy
 
-Wszystkie napisane kontrakty w ramach tego projektu są odpowiednio przetestowane przez plik *Auction.test.js* znajdujący się w folderze **test**. Testy te można uruchomić poleceniem `npm run test` (aby uzyskać coverage kontraktów należy użyć polecenia `npm run test-coverage`).
+Wszystkie napisane kontrakty w ramach tego projektu są odpowiednio przetestowane przez plik _Auction.test.js_ znajdujący się w folderze **test**. Testy te można uruchomić poleceniem `npm run test` (aby uzyskać coverage kontraktów należy użyć polecenia `npm run test-coverage`).
 
 Testy te są testami typu **end-to-end**, tzn. testujemy wysokopoziomową funkcjonalość zapewnioną przez kontrakty, czyli tworzenie nowych aukcji oraz dowolną interakcję z nimi.
 
 W testach często stosowana jest funkcja `advanceBlockAtTime`, której używamy do 'przesuwania' aktualnego czasu na Blockchainie, co pozwala nam przemieszczanie się pomiędzy poszczególne fazy aukcji. Po testach, czas w Ganache powinien powrócić do aktualnego, jednak czasy wykopanych bloków w historii mogą być nierosnące.
 
-Dla każdego *if*-a oraz *require*-a, testy sprawdzają wszystkie możliwe gałęzi wykonania, co potwierdza **100%** "branch coverage'u" na naszych kontraktach:
+Dla każdego _if_-a oraz _require_-a, testy sprawdzają wszystkie możliwe gałęzi wykonania, co potwierdza **100%** "branch coverage'u" na naszych kontraktach:
 
-
-
-| File                |  % Stmts | % Branch |  % Funcs |  % Lines |Uncovered Lines |
-|---------------------|----------|----------|----------|----------|----------------|
-| Auction.sol         |      100 |      100 |      100 |      100 |                |
-| AuctionFactory.sol  |      100 |      100 |      100 |      100 |                |
-| CloneFactory.sol    |      100 |      100 |      100 |      100 |                |
-| **All files**       |  **100** |  **100** |  **100** |  **100** |                |
+| File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Lines |
+| ------------------ | ------- | -------- | ------- | ------- | --------------- |
+| Auction.sol        | 100     | 100      | 100     | 100     |                 |
+| AuctionFactory.sol | 100     | 100      | 100     | 100     |                 |
+| CloneFactory.sol   | 100     | 100      | 100     | 100     |                 |
+| **All files**      | **100** | **100**  | **100** | **100** |                 |
