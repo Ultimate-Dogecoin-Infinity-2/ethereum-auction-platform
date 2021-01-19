@@ -10,7 +10,8 @@
         "dev": "lite-server",
         "build": "truffle compile",
         "deploy": "truffle compile; truffle migrate --reset",
-        "test": "npm run deploy; truffle test"
+        "test": "npm run deploy; truffle test",
+        "test-coverage": "npm run deploy; truffle run coverage"
     },
     "repository": {
         "type": "git",
