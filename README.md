@@ -18,7 +18,7 @@ Student project for blockchain fundamentals course.
 
 -   This project is an implementation of Vickrey auction on Ethereum blockchain using Solidity.
 -   A user is able to create an auction by providing a starting price, two phase deadlines, and description of an item/service to be sold.
--   For a given auction, users are be able to bid by locking their funds (possibly greater than the placed) in the contract without revealing their actual bid.
+-   For a given auction, users are be able to bid by locking their funds (possibly greater than the placed bid) in the contract without revealing their actual bid.
 -   After the first deadline users must reveal their bids for them to be considered. Users cannot create new bids now.
 -   After the second deadline, respective funds can be withdrawn by the interested parties. Winner (if any) withdraws the difference between their bid and the second price, while the auction creator withdraws the second price.
 
@@ -50,4 +50,4 @@ Full description of the project can be found here: [Documentation (PL)](Dokument
 
 Project code is distributed under the [GPL3 License](https://www.gnu.org/licenses/gpl-3.0.html). See [LICENSE](LICENSE) for more information.
 
-Ultimate Dogecoin Infinity 2 logo and all other images are distributed under [CC BY-SA 2.5](https://creativecommons.org/licenses/by-sa/2.5/)
+Ultimate Dogecoin Infinity 2 logo and all other images are distributed under [CC BY-SA 2.5](https://creativecommons.org/licenses/by-sa/2.5/).
