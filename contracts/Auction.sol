@@ -9,6 +9,7 @@ contract Auction {
 
     uint256 public startingPrice;
 
+    // Time given in unix timestamp
     uint256 public phaseTwoStart;
     uint256 public phaseThreeStart;
 
