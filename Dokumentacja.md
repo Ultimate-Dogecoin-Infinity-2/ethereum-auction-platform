@@ -189,11 +189,44 @@ jaką będzie on płacić za wygranie aukcji.
 Z kolei funkcja `withdrawDealer` pozwala na wysłanie do
 właściciela aukcji zapłaty od zwycięzcy.
 
-# Minimal Proxy Contract
+## Minimal Proxy Contract
+
 Pierwotna wersja kontraktu AuctionFactory zawierała klasyczną implementację wzorca projektowego fabryki. Koszty tworzenia nowej aukcji okazały się jednak bardzo duże. Powodem tego jest fakt, że za każdym razem kiedy umieszczamy nową aukcję na chainie poza samym stworzeniem stanu nowego kontraktu powielamy również całą logikę tego kontraktu.
 
-W celu zaoszczędzenia gazu wykorzystaliśmy standard [EIP-1167: Minimal Proxy Contract](https://eips.ethereum.org/EIPS/eip-1167). W skrócie pozwala on na tworzenie 'klonów' kontraktu aukcji, które posiadają swój własny stan, natomiast ich logika odpowiada jedynie za delegowanie wywołań funkcji do oryginalnego kontraktu aukcji umieszczonego na chainie. 
+W celu zaoszczędzenia gazu wykorzystaliśmy standard [EIP-1167: Minimal Proxy Contract](https://eips.ethereum.org/EIPS/eip-1167). W skrócie pozwala on na tworzenie 'klonów' kontraktu aukcji, które posiadają swój własny stan, natomiast ich logika odpowiada jedynie za delegowanie wywołań funkcji do oryginalnego kontraktu aukcji umieszczonego na chainie.
 
-Nowa wersja kontraktu AuctionFactory dziedziczy teraz po kontrakcie CloneFactory, który jest 
-[oryginalną implementacją](https://github.com/optionality/clone-factory/blob/master/contracts/CloneFactory.sol) standardu EIP-1167. W celu dostosowania naszego kodu do nowej metody tworzenia aukcji
+Nowa wersja kontraktu AuctionFactory dziedziczy teraz po kontrakcie CloneFactory, który jest
+[oryginalną implementacją](https://github.com/optionality/clone-factory/blob/master/contracts/CloneFactory.sol) standardu EIP-1167. W celu dostosowania naszego kodu do nowej metody tworzenia aukcji
 zastąpiliśmy konstruktor kontraktu aukcji przez funkcję inicjalizującą.
+
+## Przykładowa interakcja z kontraktem przy użyciu dostarczonego front-endu
+
+### Tworzenie aukcji
+
+Osoba chcąca utworzyć aukcję musi ustalić kiedy kończą się fazy druga oraz trzecia. Oprócz tego opcjonalnie może podać ona cenę startową oraz opis. Ostatnią wymaganą rzeczą jest adres właściciela aukcji na który mają zostać przelane środki po jej zakończeniu:
+
+![Tworzenie aukcji](images/1-creating_auction.png)
+
+Operację można zweryfikować poprzez sprawdzenie listy utworzonych aukcji:
+
+![Lista aukcji](images/2-list_auctions.png)
+
+### Licytowanie na aukcji
+
+Licytacja na aukcji podzielona jest na dwie fazy: zgłoszenie hasza oraz odkrycie hasza.
+
+Aby zgłosić hasza musimy podać adres aukcji na którą chcemy zalicytować oraz wysokość oferowanej przez nas ceny. W przypadku gdy chcemy podzielić bid na kilka mniejszych musimy za każdym razem podać takie samo id dla zgłoszenia. Za każdym określamy również ile środków zostanie faktycznie przesłanych na konto aukcji na pokrycie ewentualnej wygranej. W sumie środki te powinny być większe niż zgłoszona oferta. Oprócz tego warto dodać losową sól dla rozróżnienia zgłoszeń o tych samych id oraz zgłoszonej ofercie.
+
+![Zgłaszanie hasza](images/3-place_bid.png)
+
+Po rozpoczęciu fazy drugiej należy odsłonić swojego hasza. Aby to zrobić podajemy dokładnie te same dane które wcześniej podawaliśmy przy jego zgłaszaniu
+
+![Odkrycie hasza](images/4-bid_reveal.png)
+
+### Odbieranie środków
+
+Po zakończeniu fazy drugiej pozostaje nam już tylko odebrać środki. Jeśli wygraliśmy aukcję kontrakt zwróci nam nasze zamrożone środki pomniejszoną o końcową cenę przedmiotu. W przeciwnym wypadku otrzymamy całość naszych zamrożonych środków. Aby to zrobić po prostu podajemy id zgłoszenia z którego chcemy wypłacić środki:
+
+![Wypłata](images/5-withdraw.png)
+
+W przypadku wypłacania środków jako właściciel aukcji nie musimy podawać id zgłoszenia a jedynie sam adres aukcji.
