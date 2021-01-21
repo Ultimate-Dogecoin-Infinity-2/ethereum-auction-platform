@@ -50,4 +50,4 @@ Full description of the project can be found here: [Documentation (PL)](Dokument
 
 Project code is distributed under the [GPL3 License](https://www.gnu.org/licenses/gpl-3.0.html). See [LICENSE](LICENSE) for more information.
 
-Ultimate Dogecoin Infinity 2 logo and all other images are distributed under [CC BY-SA 2.5](https://creativecommons.org/licenses/by-sa/2.5/).
+Ultimate Dogecoin Infinity 2 logo and all other images are distributed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
