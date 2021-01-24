@@ -4,10 +4,10 @@
 
 Przedstawiamy aplikację obsługującą aukcję drugiej ceny na blockchainie Ethereum.
 Składa się ona ze smart kontraktu aukcji oraz aplikacji po stronie klienta umożliwiającej
-tworzenie aukcji i branie w nich udziału.
+tworzenie aukcji i uczestniczenia w nich.
 Wszystkie smart kontrakty zawarte w projekcie zostały zaimplementowane
 w języku Solidity, natomiast aplikacja po stronie klienta jest
-oparta o JavaScript i HTML.
+oparta o HTML i Javascript z bibliotekami __web3.js__.
 
 Specyfikacja:
 
@@ -20,46 +20,46 @@ Specyfikacja:
 
 ## Aukcja drugiej ceny na blockchainie
 
-W aukcji drugiej ceny uczestnicy aukcji jednocześnie zgłaszają swoje
+Uczestnicy aukcji drugiej ceny jednocześnie zgłaszają swoje
 odzywki. Zwycięzcą takiej aukcji zostaje gracz, który zgłosił największą
-odzywkę, spośród tych którzy przekroczyli cenę startową ustaloną przez
+odzywkę, spośród tych, którzy przekroczyli cenę startową ustaloną przez
 operatora aukcji.
 Zapłata zwycięzcy wynosi maksimum z ceny startowej
 oraz drugiej największej odzywki spośród
 wszystkich graczy.
 
 Zaletą takiej aukcji jest to, że jest ona motywacyjnie zgodna,
-tzn. każdemu uczestnikowi opłaca się zgłosić cenę jaką
-rzeczywiście ma dla niego licytowany przedmiot.
+tzn. każdy jej uczestnik otrzyma z tej aukcji największe korzyści, gdy
+wyjawi swoje szczere preferencje, czyli każdemu uczestnikowi opłaca się zgłosić taką cenę, jaką
+wartość ma dla niego licytowany przedmiot.
 
 Założenie o jednoczesnym zgłoszeniu odzywek oczywiście jest jedynie uproszczeniem.
 W rzeczywistości wymaganym założeniem jest, aby gracze zdecydowali się na swoje
 odzywki nie znając zgłoszeń innych graczy. Zrealizujemy
 to założenie poprzez podział aukcji na trzy fazy.
-W skrócie, w pierwszej fazie gracze będą zgłaszali swoje odzywki
-poprzez wysyłanie zahaszowanych zgłoszeń, a w drugiej fazie będą odsłaniali
-wysłane wcześniej zgłoszenia.
-W ostatniej, trzeciej fazie gracze będą mogli odebrać swoje zablokowane pieniądze.
+W pierwszej fazie gracze będą zgłaszali swoje odzywki
+poprzez wysyłanie zahaszowanych zgłoszeń, w drugiej fazie będą odsłaniali
+wysłane wcześniej zgłoszenia, a w ostatniej, trzeciej fazie, gracze będą mogli odebrać swoje zablokowane pieniądze,
+a organizator aukcji będzie mógł odebrać swoją należność.
+Dokładny opis tych etapów znajduje się poniżej.
 
 ### Faza zgłoszeń
 
-W pierwszej fazie razem z zahaszowanym zgłoszeniem gracze muszą wysłać
-fundusze pokrywające to zgłoszenie. Zauważmy jednak, że gdyby wysłali w jednej transakcji
-dokładnie tyle ile chcą zgłosić to tracimy ukrycie zgłoszeń,
+W fazie pierwszej gracze wysyłają zahaszowane zgłoszenie wraz z funduszami pokrywającymi to zgłoszenie.
+Zauważmy jednak, że gdyby wysłali w jednej transakcji
+dokładnie tyle ile chcą zgłosić, to tracimy ukrycie zgłoszeń,
 które chcieliśmy uzyskać za pomocą haszy.
-Z tego powodu wprowadzamy dwie możliwości na naprawę tego problemu,
-które gracz może zastosować równocześnie:
+Z tego powodu zostały wprowadzone dwie możliwości naprawiające ten problem, które gracz może zastosować równocześnie:
 
--   możemy rozdzielić pojedyncze zgłoszenie na kilka transakcji
--   możemy wysyłać więcej pieniędzy niż zgłaszamy
+-   rozdzielić pojedyncze zgłoszenie na kilka transakcji
+-   wysyłać (zamrozić) więcej pieniędzy niż zgłasza
 
-Aby to osiągnąć zgłoszenie będzie składało się z unikalnego id, zgłaszanej ceny oraz
+Aby to osiągnąć, zgłoszenie będzie składało się z unikalnego id, zgłaszanej ceny oraz
 adresu, na który mają zostać zwrócone pieniądze.
-Wysłanie częściowego zgłoszenia będzie polegało teraz na wysłaniu
+Wysłanie częściowego zgłoszenia będzie polegało na wysłaniu
 wraz z pieniędzmi hasza krotki (id zgłoszenia, adres zwrotu, zgłaszana cena, sól), gdzie
 sól to identyfikator częściowego zgłoszenia.
-Z punktu widzenia kontraktu nie jesteśmy w stanie w tej fazie rozpoznać
-zgłoszeń, zatem spamiętujemy tylko ile funduszy niosą ze sobą kolejne hasze.
+Kontrakt nie jest w stanie w tej fazie rozpoznać zgłoszeń, zatem spamiętuje tylko ile funduszy niosą ze sobą kolejne hasze.
 
 ### Faza odsłonień
 
@@ -68,7 +68,7 @@ niezahaszowanych częściowych zgłoszeń z pierwszej fazy.
 W momencie odsłonięcia danego hasza spamiętujemy, że
 pieniądze, które były przysłane razem z nim są teraz zablokowane
 na konkretnym zgłoszeniu.
-Dane zgłoszenie będzie brane pod uwagę w aukcji dopiero w momencie
+Dane zgłoszenie będzie brane pod uwagę w aukcji dopiero w momencie,
 kiedy fundusze na nim zablokowane osiągną zgłaszaną cenę.
 
 Zauważmy też, że gracze mogą nie odkryć swoich częściowych zgłoszeń,
@@ -77,8 +77,8 @@ Aby zapewnić nieopłacalność takiego postępowania wprowadzamy dodatkowe
 ograniczenie, że zwrot pieniędzy za dane zgłoszenie można uzyskać tylko wtedy,
 gdy pieniądze zablokowane na nim w całości go pokrywają.
 W przeciwnym wypadku, właściciel aukcji mógłby wysłać dużo zgłoszeń
-i odkryć tylko to, którego kwota jest minimalne mniejsza od kwoty gracza, który
-postawił najwięcej, przez co mógłby on zarobić na tej aukcji więcej pieniędzy.
+i odkryć tylko to zgłoszenie, którego kwota jest minimalne mniejsza od kwoty gracza, który
+postawił najwięcej ze wszystkich graczy, przez co mógłby on zarobić na tej aukcji więcej pieniędzy, powodując w ten sposób, że aukcja przestaje być motywacyjnie zgodna.
 
 Ponadto, w celu równomiernego rozkładu opłat za gaz pomiędzy graczy, zwycięzca
 aukcji jest już wyznaczany na bieżąco w drugiej turze.
@@ -92,7 +92,7 @@ natomiast gracze będą mogli odzyskać fundusze zablokowane na swoich pokrytych
 
 Wszystkie smart kontrakty zawarte w projekcie znajdują się
 w folderze `contracts`. Główną częścią projektu jest kontrakt aukcji zaimplementowany
-w pliku `Auction.sol`. Zaimplementowany został kontrakt `AuctionFactory`, który
+w pliku `Auction.sol`. Zaimplementowany został również kontrakt `AuctionFactory`, który
 pozwala tworzyć nowe aukcje i utrzymuje tablicę adresów stworzonych już aukcji.
 Cała implementacja aplikacji po stronie klienta znajduje się w folderze `src`.
 
@@ -103,9 +103,9 @@ kontraktu Auction.
 Opis kontraktu zaczniemy od krótkiej informacji dotyczącej jednostek pieniędzy i czasu.
 
 W całym kontrakcie wszystkie zmienne utrzymujące
-liczbę pieniędzy/cenę wykorzystują jako nominał wei.
+liczbę pieniędzy/cenę wykorzystują jako nominał **wei**.
 
-W przypadku czasu będziemy wykorzystywać czas uniksowy.
+W przypadku zmiennych przechowujących czas, będziemy wykorzystywać czas uniksowy.
 Do jego pomiaru przy sprawdzaniu numeru obecnej fazy wykorzystywany jest
 `block.timestamp`. Warto zwrócić uwagę, że ten znacznik czasowy jest ustalany przez minera,
 przez co może być przez niego lekko manipulowany (przy dużych
@@ -117,10 +117,10 @@ aby nie wysyłali transakcji w okolicach granic kolejnych faz.
 Możemy teraz przejść do opisu zmiennych, które
 zostają przekazane do funkcji inicjalizującej przy tworzeniu aukcji:
 
--   `phaseTwoStart`: czas rozpoczęcia drugiej fazy podany jako Unix timestamp.
--   `phaseThreeStart`: czas rozpoczęcia trzeciej fazy podany jako Unix timestamp
+-   `phaseTwoStart`: czas rozpoczęcia drugiej fazy podany jako *Unix timestamp*.
+-   `phaseThreeStart`: czas rozpoczęcia trzeciej fazy podany jako *Unix timestamp*
 -   `description`: opis licytowanego przedmiotu
--   `startingPrice`: cena początkowa podana w Wei
+-   `startingPrice`: cena początkowa podana w *Wei*
 -   `owner`: adres na który ma zostać przelana zapłata zwycięzcy aukcji
 
 Wszystkie odsłonięte zgłoszenia w aukcji są spamiętywane
@@ -164,11 +164,11 @@ wykonując poniższe operacje:
 
 -   sprawdzamy, czy hasz tego częściowego zgłoszenia został wysłany w pierwszej fazie
     i nie został do tej pory odsłonięty
--   w przypadku gdy zostało już wcześniej odsłonięte inne częściowe zgłoszenie
-    mające to samo id zgłoszenia sprawdzamy, czy jest to to samo zgłoszenie
+-   w przypadku, gdy zostało już wcześniej odsłonięte inne częściowe zgłoszenie
+    mające to samo id zgłoszenia, sprawdzamy, czy jest to to samo zgłoszenie
     (wymuszamy równość adresów zwrotu oraz zgłoszonej ceny).
 
-Zauważmy, że druga przedstawiona operacja wymusza, aby id było losowe - w przeciwnym wypadku, jeżeli znane by było przez osobę trzecią, to mogłaby ona w pierwszej fazie zgłosić hasz z naszym id z arbitralną zgłoszoną ceną, a w drugiej fazie odsłonić ten hasz przed nami, blokując nam możliwość odsłaniania naszych częściowych zgłoszeń, blokując nam w ten sposób wysłane przez nas wcześniej pieniądze.
+Zauważmy, że druga przedstawiona operacja wymusza, aby id było tajne - w przeciwnym wypadku, jeżeli znane by było przez osobę trzecią, to mogłaby ona w pierwszej fazie zgłosić hasz z naszym id z arbitralną zgłoszoną ceną, a w drugiej fazie odsłonić ten hasz przed nami, blokując nam możliwość odsłaniania naszych częściowych zgłoszeń, blokując nam w ten sposób wysłane przez nas wcześniej pieniądze.
 
 Jeśli częściowe zgłoszenie okaże się poprawne,
 przenosimy fundusze spamiętane pod tym haszem do zgłoszenia.
