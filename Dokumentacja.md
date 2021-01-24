@@ -52,13 +52,14 @@ które gracz może zastosować równocześnie:
 
 -   możemy rozdzielić pojedyncze zgłoszenie na kilka transakcji
 -   możemy wysyłać więcej pieniędzy niż zgłaszamy
-    Aby to osiągnąć zgłoszenie będzie składało się z unikalnego id, zgłaszanej ceny oraz
-    adresu, na który mają zostać zwrócone pieniądze.
-    Wysłanie częściowego zgłoszenia będzie polegało teraz na wysłaniu
-    wraz z pieniędzmi hasza krotki (id zgłoszenia, adres zwrotu, zgłaszana cena, sól), gdzie
-    sól to identyfikator częściowego zgłoszenia.
-    Z punktu widzenia kontraktu nie jesteśmy w stanie w tej fazie rozpoznać
-    zgłoszeń, zatem spamiętujemy tylko ile funduszy niosą ze sobą kolejne hasze.
+
+Aby to osiągnąć zgłoszenie będzie składało się z unikalnego id, zgłaszanej ceny oraz
+adresu, na który mają zostać zwrócone pieniądze.
+Wysłanie częściowego zgłoszenia będzie polegało teraz na wysłaniu
+wraz z pieniędzmi hasza krotki (id zgłoszenia, adres zwrotu, zgłaszana cena, sól), gdzie
+sól to identyfikator częściowego zgłoszenia.
+Z punktu widzenia kontraktu nie jesteśmy w stanie w tej fazie rozpoznać
+zgłoszeń, zatem spamiętujemy tylko ile funduszy niosą ze sobą kolejne hasze.
 
 ### Faza odsłonień
 
@@ -204,7 +205,7 @@ zastąpiliśmy konstruktor kontraktu aukcji przez funkcję inicjalizującą.
 
 ### Tworzenie aukcji
 
-Osoba chcąca utworzyć aukcję musi ustalić kiedy kończą się fazy druga oraz trzecia. Oprócz tego opcjonalnie może podać ona cenę startową oraz opis. Ostatnią wymaganą rzeczą jest adres właściciela aukcji na który mają zostać przelane środki po jej zakończeniu:
+Osoba chcąca utworzyć aukcję musi ustalić kiedy kończą się fazy pierwsza oraz druga. Oprócz tego opcjonalnie może podać ona cenę startową oraz opis. Ostatnią wymaganą rzeczą jest adres właściciela aukcji na który mają zostać przelane środki po jej zakończeniu:
 
 ![Tworzenie aukcji](images/1-creating_auction.png)
 
