@@ -8,7 +8,7 @@
 ![Contributions welcome](https://img.shields.io/badge/contributions-welcome-green.svg)
 ![Dogeness](https://img.shields.io/badge/dogeness-%E2%88%9E-yellow)
 ![Build Passing](https://img.shields.io/badge/build-passing-green)
-![Rating](https://img.shields.io/badge/rating-%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%85-red)
+![Rating](https://img.shields.io/badge/rating-★★☆☆☆-red)
 ![Patreons](https://img.shields.io/badge/patreons-2-blueviolet)
 ![Funding](https://img.shields.io/badge/funding-0%24-informational)
 
